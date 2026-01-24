@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-23T12:58:34Z",
+  "generated_at": "2026-01-24T05:43:54Z",
   "source_dir": "aaa-tpl-frontend/docs",
   "hash_algo": "sha256",
   "files": [
@@ -7,7 +7,7 @@
       "path": "README.md",
       "title": "Frontend Docs Index",
       "hash": "6303c998c3b45c53b84aef65c64d164de97ed19fa214c1d6374d73cb44ee108d",
-      "last_modified": "2026-01-23",
+      "last_modified": "2026-01-24",
       "metadata": {}
     }
   ]
