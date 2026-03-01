@@ -63,6 +63,55 @@ export type VersionDetail = {
   };
 };
 
+type HistoricalVersionSeed = {
+  date: string;
+  version: string;
+  name: string;
+  status: 'PLANNED' | 'PASS';
+  evidencePath: string;
+};
+
+const historicalVersionSeeds: HistoricalVersionSeed[] = [
+  { date: '2026-01-31', version: 'v2.0.5', name: 'Repo Type Map SSOT + Soft Enum', status: 'PASS', evidencePath: 'milestones/20260131_v2.0.5_repo_type_map_ssot.md' },
+  { date: '2026-01-30', version: 'v2.0.4', name: 'Init Plan Presets', status: 'PASS', evidencePath: 'milestones/20260130_v2.0.4_init_plan_presets.md' },
+  { date: '2026-01-30', version: 'v2.0.3', name: 'Repo-Checks Runtime Hint', status: 'PASS', evidencePath: 'milestones/20260130_v2.0.3_repo_checks_runtime_hint.md' },
+  { date: '2026-01-29', version: 'v2.0.2', name: 'Nightly Governance Recovery', status: 'PASS', evidencePath: 'milestones/20260129_v2.0.2_nightly_governance_recovery.md' },
+  { date: '2026-01-29', version: 'v2.0', name: 'The Agent OS', status: 'PASS', evidencePath: 'milestones/20260129_v2.0_the_agent_os.md' },
+  { date: '2026-01-29', version: 'v1.9', name: 'Supreme Court Interface', status: 'PASS', evidencePath: 'milestones/20260129_v1.9_supreme_court_interface.md' },
+  { date: '2026-01-29', version: 'v1.8', name: 'Observability 2.0', status: 'PASS', evidencePath: 'milestones/20260129_v1.8_observability_2.0.md' },
+  { date: '2026-01-29', version: 'v1.7', name: 'Federated Governance', status: 'PASS', evidencePath: 'milestones/20260129_v1.7_federated_governance.md' },
+  { date: '2026-01-29', version: 'v1.6', name: 'Multi-Agent Orchestration', status: 'PASS', evidencePath: 'milestones/20260129_v1.6_Multi_Agent_Orchestration.md' },
+  { date: '2026-01-28', version: 'v1.5', name: 'Self-Healing Engine', status: 'PASS', evidencePath: 'milestones/20260128_v1.5_Self_Healing_Engine.md' },
+  { date: '2026-01-28', version: 'v1.4', name: 'Policy Distribution', status: 'PASS', evidencePath: 'milestones/20260128_v1.4_Policy_Distribution.md' },
+  { date: '2026-01-28', version: 'v1.3', name: 'Governance Compiler', status: 'PASS', evidencePath: 'milestones/20260128_v1.3_Governance_Compiler.md' },
+  { date: '2026-01-28', version: 'v1.2', name: 'Semantic Registry', status: 'PASS', evidencePath: 'milestones/20260128_v1.2_semantic_registry.md' },
+  { date: '2026-01-28', version: 'v1.1', name: 'Semantic Era', status: 'PASS', evidencePath: 'milestones/20260128_v1.1_semantic_era.md' },
+  { date: '2026-01-24', version: 'v1.0', name: 'Enterprise Delivery', status: 'PASS', evidencePath: 'milestones/20260124_v1.0_architecture_definition.md' },
+  { date: '2026-01-24', version: 'v0.9', name: 'Governance Compliance Dashboard', status: 'PLANNED', evidencePath: 'milestones/20260124_v0.9_architecture_definition.md' },
+  { date: '2026-01-24', version: 'v0.8', name: 'Marketplace Assets', status: 'PASS', evidencePath: 'milestones/20260124_v0.8_architecture_definition.md' },
+  { date: '2026-01-23', version: 'v0.7', name: 'Architecture Definition', status: 'PASS', evidencePath: 'milestones/20260123_v0.7_architecture_definition.md' },
+  { date: '2026-01-22', version: 'v0.6', name: 'Architecture Definition', status: 'PASS', evidencePath: 'milestones/20260122_v0.6_architecture_definition.md' },
+  { date: '2026-01-22', version: 'v0.5', name: 'Architecture Definition', status: 'PASS', evidencePath: 'milestones/20260122_v0.5_architecture_definition.md' },
+  { date: '2026-01-21', version: 'v0.4', name: 'Architecture Definition', status: 'PASS', evidencePath: 'milestones/20260121_v0.4_architecture_definition.md' },
+  { date: '2026-01-21', version: 'v0.3', name: 'Architecture Definition', status: 'PASS', evidencePath: 'milestones/20260121_v0.3_architecture_definition.md' },
+  { date: '2026-01-20', version: 'v0.2', name: 'Architecture Definition', status: 'PASS', evidencePath: 'milestones/20260120_v0.2_architecture_definition.md' },
+  { date: '2026-01-18', version: 'v0.1', name: 'Executable Architecture', status: 'PASS', evidencePath: 'milestones/20260118_v0.1_executable_architecture.md' },
+];
+
+const historicalBackfilledVersions: OpsVersionRow[] = historicalVersionSeeds.map((item) => ({
+  releaseTrack: 'legacy_milestone',
+  date: item.date,
+  version: item.version,
+  name: item.name,
+  meaning: `歷史里程碑回填：${item.name}`,
+  why: '補齊歷史版本可追溯性，避免僅有單一新流程版本可查。',
+  landing: 'governance:legacy_milestone',
+  status: item.status === 'PLANNED' ? 'PLANNED' : 'PASS',
+  availability: 'historical-backfilled-row',
+  runRef: 'legacy:N/A',
+  evidenceRefs: [item.evidencePath],
+}));
+
 export const versions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
@@ -84,6 +133,19 @@ export const versions: OpsVersionRow[] = [
     ],
   },
   {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-03-01',
+    version: 'v2.0.0',
+    name: 'AAA Operate-Maintain Workflow Law Adoption',
+    meaning: '將 AAA 版本開發流程統一為 4-Step v2.0.0 並定義可匯入能力。',
+    why: '讓 AAA 本體與繼承專案共享 machine-checkable 版本治理。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'UNVERIFIED',
+    availability: 'bootstrap-row',
+    runRef: 'N/A (step2-pending)',
+    evidenceRefs: ['operate_maintain_guide.md', 'workflow_index.md', 'version_index.md'],
+  },
+  {
     releaseTrack: 'legacy_trust_boundary',
     date: '2026-01-29',
     version: 'v2.0.1',
@@ -99,6 +161,7 @@ export const versions: OpsVersionRow[] = [
       'internal/development/milestones/completion-reports/aaa_v2.0.1_completion_report_20260129.md',
     ],
   },
+  ...historicalBackfilledVersions,
 ];
 
 export const workflows: WorkflowRow[] = [
@@ -128,7 +191,7 @@ export const workflows: WorkflowRow[] = [
   },
 ];
 
-export const versionDetails: VersionDetail[] = [
+const explicitVersionDetails: VersionDetail[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.0',
@@ -342,4 +405,94 @@ export const versionDetails: VersionDetail[] = [
       dataDate: '2026-01-29',
     },
   },
+];
+
+function buildBackfilledDetail(row: OpsVersionRow): VersionDetail {
+  const isPlanned = row.status === 'PLANNED';
+  const status = isPlanned ? 'PLANNED' : 'COMPLETED';
+  const verify = isPlanned ? 'UNVERIFIED' : 'BACKFILLED';
+  return {
+    releaseTrack: row.releaseTrack,
+    versionKey: `${row.releaseTrack}::${row.version}`,
+    date: row.date,
+    version: row.version,
+    name: row.name,
+    meaning: row.meaning,
+    why: row.why,
+    purpose: row.meaning,
+    targets: {
+      pass: '歷史版本回填可追溯。',
+      fail: '歷史版本證據缺失或索引不一致。',
+    },
+    workflowName: row.landing,
+    workflowUseCase: 'Historical backfill for governance traceability.',
+    status,
+    verificationStatus: verify,
+    dataMode: 'historical-backfill',
+    updatedAt: `${row.date}T23:59:59+08:00`,
+    digest: `sha256:${row.releaseTrack}-${row.version}-backfill`,
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線（Backfill）',
+        status: isPlanned ? 'PENDING' : 'PASS',
+        lines: ['歷史版本由 milestones/index 回填至版本索引。'],
+        artifacts: row.evidenceRefs,
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行（Backfill）',
+        status: isPlanned ? 'PENDING' : 'PASS',
+        lines: ['歷史資料僅提供回填證據，不重新執行舊版 pipeline。'],
+        artifacts: ['legacy:N/A'],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存（Backfill）',
+        status: 'PENDING',
+        lines: ['舊版未套用 v2 workflow 資產封裝格式。'],
+        artifacts: ['N/A (historical backfill)'],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付（Backfill）',
+        status: isPlanned ? 'PENDING' : 'PASS',
+        lines: ['歷史版本以索引列 + 里程碑證據提供可追溯性。'],
+        artifacts: row.evidenceRefs,
+      },
+    ],
+    inputs: row.evidenceRefs.map((path) => ({
+      path,
+      digest: `sha256:${row.version}-input`,
+      summary: 'Historical source evidence',
+      note: 'backfilled',
+    })),
+    outputs: [
+      {
+        path: 'aaa-tpl-docs/version_index.md',
+        digest: `sha256:${row.version}-row`,
+        summary: 'Canonical version index row',
+        note: 'backfilled',
+      },
+    ],
+    references: row.evidenceRefs.map((path) => ({
+      title: 'Historical Evidence',
+      path,
+      desc: 'Backfilled source record.',
+    })),
+    contractSummary: {
+      sourceOfTruth: 'AAA OPS REGISTRY (BACKFILLED)',
+      verdict: isPlanned ? 'HOLD' : 'GO',
+      reasonCode: isPlanned ? 'LEGACY_PLANNED' : 'LEGACY_BACKFILLED',
+      dataSource: 'MILESTONE_BACKFILL',
+      dataDate: row.date,
+    },
+  };
+}
+
+export const versionDetails: VersionDetail[] = [
+  ...explicitVersionDetails,
+  ...versions
+    .filter((v) => !explicitVersionDetails.some((d) => d.releaseTrack === v.releaseTrack && d.version === v.version))
+    .map(buildBackfilledDetail),
 ];
