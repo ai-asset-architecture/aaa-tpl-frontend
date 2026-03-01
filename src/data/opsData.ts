@@ -63,7 +63,7 @@ export type VersionDetail = {
 export const versions: OpsVersionRow[] = [
   {
     date: '2026-03-01',
-    version: 'v2.0.1',
+    version: 'v2.1.0',
     name: 'Guide Parity Gate (Core vs Template)',
     meaning: '建立 workflow law 雙來源（core/template）長期一致的 CI parity gate。',
     why: '避免兩份 operate_maintain_guide 長期漂移，造成繼承專案語義分叉。',
@@ -71,12 +71,12 @@ export const versions: OpsVersionRow[] = [
     status: 'PASS',
     availability: 'step4-pass-mcp9003-gate-satisfied',
     runRef:
-      'gh-actions:ai-asset-architecture/aaa-tpl-docs@.github/workflows/v2-0-1-guide-parity-gate.yml#22546764942',
+      'gh-actions:ai-asset-architecture/aaa-tpl-docs@.github/workflows/v2-1-0-guide-parity-gate.yml#22546764942',
     evidenceRefs: [
-      'docs/reviews/2026-03-02-v2.0.1-step4-dashboard-baseline.md',
-      'docs/reviews/2026-03-02-v2.0.1-step4-mcp-evidence.md',
-      'docs/reviews/2026-03-02-v2.0.1-step4-exit-checklist.md',
-      'docs/reviews/2026-03-02-v2.0.1-step4-completion-report.md',
+      'docs/reviews/2026-03-02-v2.1.0-step4-dashboard-baseline.md',
+      'docs/reviews/2026-03-02-v2.1.0-step4-mcp-evidence.md',
+      'docs/reviews/2026-03-02-v2.1.0-step4-exit-checklist.md',
+      'docs/reviews/2026-03-02-v2.1.0-step4-completion-report.md',
     ],
   },
 ];
@@ -96,7 +96,7 @@ export const workflows: WorkflowRow[] = [
   },
   {
     createdUpdated: '建立 2026-03-01 / 更新 2026-03-02',
-    idPath: '.github/workflows/v2-0-1-guide-parity-gate.yml',
+    idPath: '.github/workflows/v2-1-0-guide-parity-gate.yml',
     workflow: 'Guide Parity Gate (Core vs Template)',
     trigger: 'pull_request + workflow_dispatch',
     purpose: '比對兩份 guide canonical sections，防止治理法規漂移。',
@@ -111,7 +111,7 @@ export const workflows: WorkflowRow[] = [
 export const versionDetails: VersionDetail[] = [
   {
     date: '2026-03-01',
-    version: 'v2.0.1',
+    version: 'v2.1.0',
     name: 'Guide Parity Gate (Core vs Template)',
     meaning: '把 AAA 治理文件一致性與 admin front-end 驗證能力產品化。',
     why: '讓 Step4 不只文件宣告，而是可在 9003 實機驗證。',
@@ -126,7 +126,7 @@ export const versionDetails: VersionDetail[] = [
     verificationStatus: 'VERIFIED',
     dataMode: 'runtime-template',
     updatedAt: '2026-03-02T10:30:00+08:00',
-    digest: 'sha256:aaa-v2-0-1-step4-pass-mcp9003',
+    digest: 'sha256:aaa-v2-1-0-step4-pass-mcp9003',
     steps: [
       {
         step: 1,
@@ -138,9 +138,9 @@ export const versionDetails: VersionDetail[] = [
           'Step1 exit checklist 與 approval 已完成。',
         ],
         artifacts: [
-          'docs/plans/2026-03-01-v2.0.1-guide-parity-gate-plan.md',
-          'docs/audits/2026-03-01-v2.0.1-guide-parity-gate-audit.md',
-          'docs/reviews/2026-03-01-v2.0.1-guide-parity-gate-diff-paths.md',
+          'docs/plans/2026-03-01-v2.1.0-guide-parity-gate-plan.md',
+          'docs/audits/2026-03-01-v2.1.0-guide-parity-gate-audit.md',
+          'docs/reviews/2026-03-01-v2.1.0-guide-parity-gate-diff-paths.md',
         ],
       },
       {
@@ -153,9 +153,9 @@ export const versionDetails: VersionDetail[] = [
           'Step2 exit checklist 全項 PASS。',
         ],
         artifacts: [
-          '.github/workflows/v2-0-1-guide-parity-gate.yml',
+          '.github/workflows/v2-1-0-guide-parity-gate.yml',
           'scripts/gates/verify_operate_maintain_guides.py',
-          'docs/reviews/2026-03-01-v2.0.1-step2-exit-checklist.md',
+          'docs/reviews/2026-03-01-v2.1.0-step2-exit-checklist.md',
         ],
       },
       {
@@ -167,8 +167,8 @@ export const versionDetails: VersionDetail[] = [
           'milestone 與 evidence index 已完成封裝。',
         ],
         artifacts: [
-          'docs/evidence/v2.0.1/guide-parity-gate/asset-manifest.v0.1.json',
-          'docs/milestones/20260301_v2.0.1_guide-parity-gate.md',
+          'docs/evidence/v2.1.0/guide-parity-gate/asset-manifest.v0.1.json',
+          'docs/milestones/20260301_v2.1.0_guide-parity-gate.md',
         ],
       },
       {
@@ -180,9 +180,9 @@ export const versionDetails: VersionDetail[] = [
           'completion report / exit checklist / version_index 同步完成。',
         ],
         artifacts: [
-          'docs/reviews/2026-03-02-v2.0.1-step4-mcp-evidence.md',
-          'docs/reviews/2026-03-02-v2.0.1-step4-exit-checklist.md',
-          'docs/reviews/2026-03-02-v2.0.1-step4-completion-report.md',
+          'docs/reviews/2026-03-02-v2.1.0-step4-mcp-evidence.md',
+          'docs/reviews/2026-03-02-v2.1.0-step4-exit-checklist.md',
+          'docs/reviews/2026-03-02-v2.1.0-step4-completion-report.md',
         ],
       },
     ],
@@ -202,13 +202,13 @@ export const versionDetails: VersionDetail[] = [
     ],
     outputs: [
       {
-        path: 'aaa-tpl-docs/docs/reviews/2026-03-02-v2.0.1-step4-mcp-evidence.md',
+        path: 'aaa-tpl-docs/docs/reviews/2026-03-02-v2.1.0-step4-mcp-evidence.md',
         digest: 'sha256:step4-mcp-evidence',
         summary: 'MCP gate evidence including 9003 validation',
         note: '-',
       },
       {
-        path: 'aaa-tpl-docs/docs/reviews/2026-03-02-v2.0.1-step4-completion-report.md',
+        path: 'aaa-tpl-docs/docs/reviews/2026-03-02-v2.1.0-step4-completion-report.md',
         digest: 'sha256:step4-completion-report',
         summary: 'Step4 completion claim with gate mapping',
         note: '-',

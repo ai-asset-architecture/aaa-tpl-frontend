@@ -234,7 +234,7 @@ function HeaderNav() {
           <Link className="ui-btn ui-btn-icon" to={`/ops/two-loop-dashboard?lang=${lang}`} title={t(lang, 'twoLoopCenter')} aria-label={t(lang, 'twoLoopCenter')}>
             {icon('loop')}
           </Link>
-          <Link className="ui-btn ui-btn-icon" to={`/ops-version/v2.0.1?lang=${lang}`} title={t(lang, 'versionDashboard')} aria-label={t(lang, 'versionDashboard')}>
+          <Link className="ui-btn ui-btn-icon" to={`/ops-version/v2.1.0?lang=${lang}`} title={t(lang, 'versionDashboard')} aria-label={t(lang, 'versionDashboard')}>
             {icon('detail')}
           </Link>
           <button className="ui-btn ui-btn-primary">{t(lang, 'signIn')}</button>
@@ -261,7 +261,7 @@ function HomePage() {
             <h3>{t(lang, 'versionListTitle')}</h3>
             <p>{t(lang, 'versionListDesc')}</p>
           </Link>
-          <Link to={`/ops-version/v2.0.1?lang=${lang}`} className="home-card">
+          <Link to={`/ops-version/v2.1.0?lang=${lang}`} className="home-card">
             <h3>{t(lang, 'versionDashboard')}</h3>
             <p>{t(lang, 'versionDashDesc')}</p>
           </Link>
