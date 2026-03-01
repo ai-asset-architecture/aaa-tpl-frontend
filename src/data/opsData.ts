@@ -70,6 +70,9 @@ type HistoricalVersionSeed = {
   status: 'PLANNED' | 'PASS';
   evidencePath: string;
   extraEvidencePaths?: string[];
+  meaning?: string;
+  why?: string;
+  landing?: string;
 };
 
 const historicalVersionSeeds: HistoricalVersionSeed[] = [
@@ -110,19 +113,145 @@ const historicalVersionSeeds: HistoricalVersionSeed[] = [
   { date: '2026-01-18', version: 'v0.1', name: 'Executable Architecture', status: 'PASS', evidencePath: 'milestones/20260118_v0.1_executable_architecture.md' },
 ];
 
-const historicalBackfilledVersions: OpsVersionRow[] = historicalVersionSeeds.map((item) => ({
-  releaseTrack: 'legacy_milestone',
+const legacyRegistryContextByVersion: Record<string, { meaning: string; why: string; landing: string }> = {
+  'v2.0.5': {
+    meaning: '以 repo_type_map.json 建立 nightly repo_type 單一真相，加入缺失 mapping fail-fast 與 unknown soft WARN。',
+    why: '修復 repo_type 漂移造成的治理失真，確保 nightly 稽核可穩定重放。',
+    landing: 'internal/development/plans/2026-01-31-v2.0.5-repo-type-map-plan.md',
+  },
+  'v2.0.4': {
+    meaning: '以 presets + default_preset 升級 init 計畫，預設 Governance-Native 並強制包含 .github。',
+    why: '讓新專案初始化具一致治理預設並保留 legacy fallback，降低導入分歧。',
+    landing: 'internal/development/plans/2026-01-30-v2.0.4-init-plan-presets.md',
+  },
+  'v2.0.3': {
+    meaning: '將「repo-checks 必跑」提示內建到 CLI 成功輸出，補強 post-init 治理引導。',
+    why: '降低人/AI 在初始化後遺漏治理驗證步驟的風險。',
+    landing: 'internal/development/plans/2026-01-30-v2.0.3-repo-checks-remote-hints-plan.md',
+  },
+  'v2.0.2': {
+    meaning: '修復 Nightly 治理鏈路與 Dashboard 同步失敗，強化 repo_type 錨點與 runbook 穩定性。',
+    why: '確保 nightly evidence、dashboard 與治理檢查可持續產出且可追溯。',
+    landing: 'internal/development/plans/2026-01-29-v2.0.2-dashboard-visual-governance-plan.md',
+  },
+  'v2.0': {
+    meaning: '完成 Agent OS 核心整合，建立 Guardian / Semantic / Constitution 三位一體治理運行面。',
+    why: '將 AAA 從治理工具升級為可自我治理作業系統。',
+    landing: 'internal/development/plans/2026-01-29-v2.0-init-plan.md',
+  },
+  'v1.9': {
+    meaning: '交付 Supreme Court Interface（aaa court），建立人機共治裁決機制。',
+    why: '避免 agent deadlock，在規則衝突時保留人類主權裁決通道。',
+    landing: 'internal/development/plans/2026-01-29-v1.9-init-plan.md',
+  },
+  'v1.8': {
+    meaning: '導入 Observability 2.0：MetricStore 時序化、RiskLedger 與趨勢視覺化。',
+    why: '把治理從靜態快照升級為可觀測歷史趨勢，支援風險回溯。',
+    landing: 'internal/development/plans/2026-01-29-v1.8-init-plan.md',
+  },
+  'v1.7': {
+    meaning: '完成 Federated Governance：remote audit 與 ruleset inheritance。',
+    why: '讓 AAA 從單 repo 工具升級為可跨 repo 聯邦治理協定。',
+    landing: 'internal/development/plans/2026-01-29-v1.7-init-plan.md',
+  },
+  'v1.6': {
+    meaning: '實作 Multi-Agent Orchestration 鎖協調層（LockManager + TTL）。',
+    why: '避免多代理並行時的競態與死鎖，確保治理流程可協同。',
+    landing: 'internal/development/plans/2026-01-29-v1.6-init-plan.md',
+  },
+  'v1.5': {
+    meaning: '交付 Self-Healing Engine 與語義檢查，支持自動修復與意圖級治理檢核。',
+    why: '讓治理由被動檢測升級為可主動修復，縮短故障恢復路徑。',
+    landing: 'internal/development/plans/2026-01-28-v1.5-init-plan.md',
+  },
+  'v1.4': {
+    meaning: '建立 Policy Distribution 基礎設施，落地 registry-based policy propagation。',
+    why: '讓治理更新可向下游自動傳播，形成可繼承效果。',
+    landing: 'internal/development/plans/2026-01-28-v1.4-init-plan.md',
+  },
+  'v1.3': {
+    meaning: '完成 Governance Compiler 與技術債償還，提升核心穩定度。',
+    why: '將政策定義轉為可執行治理檢查，同步補足核心模組品質。',
+    landing: 'internal/development/plans/2026-01-28-v1.3-init-plan.md',
+  },
+  'v1.2': {
+    meaning: '交付 Semantic Registry 與 Version Handshake，建立語義註冊與版本相容防線。',
+    why: '讓能力查詢與版本兼容可機械驗證，避免舊版客戶端誤接入。',
+    landing: 'internal/development/plans/2026-01-28-v1.2-init-plan.md',
+  },
+  'v1.1': {
+    meaning: '完成 Semantic Era（Pillar A/B）：自動化里程碑流與 AI-native 介面。',
+    why: '建立語義化診斷與格式協定，讓 AAA 可被 agent 原生消費。',
+    landing: 'internal/development/plans/2026-01-28-v1.1-ai-native-interface-plan.md',
+  },
+  'v1.0': {
+    meaning: '完成 Gate-First Enterprise Governance：org ruleset 強制 gate 與 release integrity。',
+    why: '把治理由建議升級為可強制執行，建立企業級交付信任鏈。',
+    landing: 'internal/development/plans/2026-01-24-v1.0-implementation-plan.md',
+  },
+  'v0.9': {
+    meaning: '完成合規率儀表板 MVP（nightly JSON + MD/HTML + threshold gate）。',
+    why: '建立每日治理營運可視化與門檻化決策基礎。',
+    landing: 'internal/development/plans/2026-01-24-aaa-v0.9-implementation-plan.md',
+  },
+  'v0.8': {
+    meaning: '建立可插拔資產市場（Pack build/index/install/checks）。',
+    why: '讓治理能力模組化交付並可重用擴充。',
+    landing: 'internal/development/plans/2026-01-24-aaa-v0.8-plan.md',
+  },
+  'v0.7': {
+    meaning: '落地 SSOT checks 與 repo_type 持久化治理。',
+    why: '把治理依據統一到可驗證單一真相。',
+    landing: 'internal/development/plans/2026-01-23-aaa-v0.7-plan.md',
+  },
+  'v0.6': {
+    meaning: '完成 agent safety 邊界與安全測試基線。',
+    why: '先建立安全與失敗模式防線，再擴展自動化能力。',
+    landing: 'internal/development/plans/2026-01-22-aaa-v0.6-action-registry-plan.md',
+  },
+  'v0.5': {
+    meaning: '完成 runbooks runtime、schema/registry 與可組合執行基線。',
+    why: '讓治理流程可執行、可重放、可擴展。',
+    landing: 'internal/development/plans/2026-01-22-aaa-v0.5-runtime-engine-plan.md',
+  },
+  'v0.4': {
+    meaning: '完成 SOP 與 CLI contract 對齊，導入 post-init audit 閉環。',
+    why: '確保專案啟動後能持續驗證治理一致性。',
+    landing: 'internal/development/plans/2026-01-21-aaa-v0.4-implementation-plan.md',
+  },
+  'v0.3': {
+    meaning: '完成 onboarding 一致性治理與 CI 穩定化。',
+    why: '避免文件與流程漂移，建立可持續交付基線。',
+    landing: 'internal/development/plans/2026-01-21-aaa-v0.3-plan.md',
+  },
+  'v0.2': {
+    meaning: '完成治理架構改進摘要與強化措施落地。',
+    why: '建立決策樹與可治理/可路由/可降級的基礎結構。',
+    landing: 'internal/development/milestones/completion-reports/aaa_v0.2_improvement_report_20260120_0322.md',
+  },
+  'v0.1': {
+    meaning: '完成可執行架構與治理模板初始基線。',
+    why: '作為後續版本演進的最小可運行治理核心。',
+    landing: 'internal/development/milestones/completion-reports/v0.1_completion_report_20260118_1235.md',
+  },
+};
+
+const historicalBackfilledVersions: OpsVersionRow[] = historicalVersionSeeds.map((item) => {
+  const registryCtx = legacyRegistryContextByVersion[item.version];
+  return {
+  releaseTrack: 'historical_milestone',
   date: item.date,
   version: item.version,
   name: item.name,
-  meaning: `歷史里程碑回填：${item.name}`,
-  why: '補齊歷史版本可追溯性，避免僅有單一新流程版本可查。',
-  landing: 'governance:legacy_milestone',
+  meaning: item.meaning ?? registryCtx?.meaning ?? `歷史里程碑回填：${item.name}`,
+  why: item.why ?? registryCtx?.why ?? '補齊歷史版本可追溯性，避免僅有單一新流程版本可查。',
+  landing: item.landing ?? registryCtx?.landing ?? 'governance:historical_milestone',
   status: item.status === 'PLANNED' ? 'PLANNED' : 'PASS',
   availability: 'historical-backfilled-row',
   runRef: 'legacy:N/A',
   evidenceRefs: [item.evidencePath, ...(item.extraEvidencePaths ?? [])],
-}));
+  };
+});
 
 export const versions: OpsVersionRow[] = [
   {
@@ -215,12 +344,12 @@ export const workflows: WorkflowRow[] = [
   },
   {
     createdUpdated: '建立 2026-01-18 / 更新 2026-03-02',
-    idPath: 'governance:legacy_milestone_archive',
+    idPath: 'governance:historical_milestone_archive',
     workflow: 'Legacy Milestone Archive Workflow',
     trigger: 'historical backfill / index sync',
     purpose: '將 v0.1~v2.0.5 既有 milestone 資產回填到版本清單與版本儀表板。',
     objective: '補齊歷史版本可追溯性，避免僅有新流程版本可查。',
-    useCase: 'legacy_milestone historical records。',
+    useCase: 'historical_milestone historical records。',
     triggerWhen: '歷史版本補齊、索引修復、治理追溯查核。',
     source: '來源：aaa-tpl-docs internal/development',
     mode: '手動回填 + 唯讀維護',

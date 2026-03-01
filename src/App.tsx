@@ -348,7 +348,6 @@ function VersionTable({ lang }: { lang: Lang }) {
             <td>
               <div className="line-1">{row.date}</div>
               <div className="line-2">{row.version}</div>
-              <div className="muted">{row.releaseTrack}</div>
               <div className="line-1">{row.name}</div>
               <div className="mt-8">
                 <Link className="link-chip" to={buildVersionUrl(row.releaseTrack, row.version, lang)}>
@@ -481,7 +480,7 @@ function VersionPage() {
               >
                 {versions.map((v) => (
                   <option key={getVersionKey(v.releaseTrack, v.version)} value={getVersionKey(v.releaseTrack, v.version)}>
-                    {v.date} · {v.version} · {v.releaseTrack} · {v.name}
+                    {v.date} · {v.version} · {v.name}
                   </option>
                 ))}
               </select>
