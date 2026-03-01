@@ -1,25 +1,73 @@
-# aaa-tpl-frontend
+# React + TypeScript + Vite
 
-## Purpose / Scope
-Template repo for frontend apps that follow aaa governance and CI patterns.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Ownership / CODEOWNERS
-Owned by frontend maintainers. See `CODEOWNERS` (to be added).
+Currently, two official plugins are available:
 
-## Versioning / Release
-Templates are versioned by git tags. Consumers should use a specific tag when generating new repos.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## How to Consume / Use
-Use this repo as a template for new frontend repos, then wire CI to `aaa-actions`.
+## React Compiler
 
-## Contribution / Promotion Rules
-Template changes must preserve required docs links and CI wiring guidance.
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Repo Scope
-Frontend UI implementation only. API contracts and shared schemas live in their designated aaa repos.
+## Expanding the ESLint configuration
 
-## Docs Link to <org>-docs
-Project documentation lives in `<org>-docs`. Link to it from this repo's README and contributing docs.
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-## CI wiring to aaa-actions
-Use reusable workflows from `aaa-actions` with tag pins for lint/test/eval gates.
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
