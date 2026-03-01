@@ -253,7 +253,29 @@ const historicalBackfilledVersions: OpsVersionRow[] = historicalVersionSeeds.map
   };
 });
 
-export const versions: OpsVersionRow[] = [
+function parseVersionParts(version: string): number[] {
+  return version
+    .replace(/^v/i, '')
+    .split('.')
+    .map((part) => Number.parseInt(part, 10))
+    .map((part) => (Number.isFinite(part) ? part : 0));
+}
+
+function compareVersionDesc(a: string, b: string): number {
+  const aParts = parseVersionParts(a);
+  const bParts = parseVersionParts(b);
+  const maxLen = Math.max(aParts.length, bParts.length);
+  for (let i = 0; i < maxLen; i += 1) {
+    const av = aParts[i] ?? 0;
+    const bv = bParts[i] ?? 0;
+    if (av !== bv) {
+      return bv - av;
+    }
+  }
+  return 0;
+}
+
+const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-03-01',
@@ -274,19 +296,6 @@ export const versions: OpsVersionRow[] = [
     ],
   },
   {
-    releaseTrack: 'operate_maintain_v2',
-    date: '2026-03-01',
-    version: 'v2.0.0',
-    name: 'AAA Operate-Maintain Workflow Law Adoption',
-    meaning: '將 AAA 版本開發流程統一為 4-Step v2.0.0 並定義可匯入能力。',
-    why: '讓 AAA 本體與繼承專案共享 machine-checkable 版本治理。',
-    landing: 'governance:operate_maintain_workflow_v2',
-    status: 'UNVERIFIED',
-    availability: 'bootstrap-row',
-    runRef: 'N/A (step2-pending)',
-    evidenceRefs: ['operate_maintain_guide.md', 'workflow_index.md', 'version_index.md'],
-  },
-  {
     releaseTrack: 'legacy_trust_boundary',
     date: '2026-01-29',
     version: 'v2.0.1',
@@ -304,6 +313,8 @@ export const versions: OpsVersionRow[] = [
   },
   ...historicalBackfilledVersions,
 ];
+
+export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => compareVersionDesc(a.version, b.version));
 
 export const workflows: WorkflowRow[] = [
   {
