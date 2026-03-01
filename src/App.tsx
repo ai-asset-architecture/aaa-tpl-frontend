@@ -13,6 +13,18 @@ import { versionDetails, versions, workflows } from './data/opsData';
 
 type Lang = 'zh-TW' | 'en';
 
+function getVersionKey(releaseTrack: string, version: string): string {
+  return `${releaseTrack}::${version}`;
+}
+
+function buildVersionUrl(releaseTrack: string, version: string, lang: Lang): string {
+  return `/ops-version/${version}?track=${encodeURIComponent(releaseTrack)}&lang=${lang}`;
+}
+
+function getDefaultVersion() {
+  return versions[0];
+}
+
 function getLang(search: string): string {
   return new URLSearchParams(search).get('lang') || 'zh-TW';
 }
@@ -202,6 +214,7 @@ function icon(name: 'workflow' | 'version' | 'dashboard' | 'loop' | 'detail') {
 function HeaderNav() {
   const location = useLocation();
   const lang = normalizeLang(location.search);
+  const defaultVersion = getDefaultVersion();
   const nextLang: Lang = lang === 'zh-TW' ? 'en' : 'zh-TW';
   const search = new URLSearchParams(location.search);
   search.set('lang', nextLang);
@@ -234,7 +247,7 @@ function HeaderNav() {
           <Link className="ui-btn ui-btn-icon" to={`/ops/two-loop-dashboard?lang=${lang}`} title={t(lang, 'twoLoopCenter')} aria-label={t(lang, 'twoLoopCenter')}>
             {icon('loop')}
           </Link>
-          <Link className="ui-btn ui-btn-icon" to={`/ops-version/v2.1.0?lang=${lang}`} title={t(lang, 'versionDashboard')} aria-label={t(lang, 'versionDashboard')}>
+          <Link className="ui-btn ui-btn-icon" to={buildVersionUrl(defaultVersion.releaseTrack, defaultVersion.version, lang)} title={t(lang, 'versionDashboard')} aria-label={t(lang, 'versionDashboard')}>
             {icon('detail')}
           </Link>
           <button className="ui-btn ui-btn-primary">{t(lang, 'signIn')}</button>
@@ -247,6 +260,7 @@ function HeaderNav() {
 function HomePage() {
   const location = useLocation();
   const lang = normalizeLang(location.search);
+  const defaultVersion = getDefaultVersion();
   return (
     <main className="ops-main-light">
       <section className="home-wrap">
@@ -261,7 +275,7 @@ function HomePage() {
             <h3>{t(lang, 'versionListTitle')}</h3>
             <p>{t(lang, 'versionListDesc')}</p>
           </Link>
-          <Link to={`/ops-version/v2.1.0?lang=${lang}`} className="home-card">
+          <Link to={buildVersionUrl(defaultVersion.releaseTrack, defaultVersion.version, lang)} className="home-card">
             <h3>{t(lang, 'versionDashboard')}</h3>
             <p>{t(lang, 'versionDashDesc')}</p>
           </Link>
@@ -329,14 +343,15 @@ function VersionTable({ lang }: { lang: Lang }) {
       </thead>
       <tbody>
         {versions.map((row, idx) => (
-          <tr key={row.version}>
+          <tr key={getVersionKey(row.releaseTrack, row.version)}>
             <td className="muted">{idx + 1}</td>
             <td>
               <div className="line-1">{row.date}</div>
               <div className="line-2">{row.version}</div>
+              <div className="muted">{row.releaseTrack}</div>
               <div className="line-1">{row.name}</div>
               <div className="mt-8">
-                <Link className="link-chip" to={`/ops-version/${row.version}?lang=${lang}`}>
+                <Link className="link-chip" to={buildVersionUrl(row.releaseTrack, row.version, lang)}>
                   {t(lang, 'openDashboard')}
                 </Link>
               </div>
@@ -423,7 +438,11 @@ function VersionPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const lang = normalizeLang(location.search);
-  const current = versionDetails.find((item) => item.version === version) || versionDetails[0];
+  const track = new URLSearchParams(location.search).get('track') || '';
+  const current =
+    versionDetails.find((item) => item.version === version && item.releaseTrack === track) ||
+    versionDetails.find((item) => item.version === version) ||
+    versionDetails[0];
 
   return (
     <main className="ops-surface ops-surface-version">
@@ -454,12 +473,15 @@ function VersionPage() {
               <div className="tile-label">{t(lang, 'selectVersion')}</div>
               <select
                 className="picker"
-                value={current.version}
-                onChange={(e) => navigate(`/ops-version/${e.target.value}?lang=${lang}`)}
+                value={current.versionKey}
+                onChange={(e) => {
+                  const [nextTrack, nextVersion] = e.target.value.split('::');
+                  navigate(buildVersionUrl(nextTrack, nextVersion, lang));
+                }}
               >
                 {versions.map((v) => (
-                  <option key={v.version} value={v.version}>
-                    {v.date} · {v.version} · {v.name}
+                  <option key={getVersionKey(v.releaseTrack, v.version)} value={getVersionKey(v.releaseTrack, v.version)}>
+                    {v.date} · {v.version} · {v.releaseTrack} · {v.name}
                   </option>
                 ))}
               </select>

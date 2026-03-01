@@ -1,4 +1,5 @@
 export type OpsVersionRow = {
+  releaseTrack: string;
   date: string;
   version: string;
   name: string;
@@ -33,6 +34,8 @@ export type StepBlock = {
 };
 
 export type VersionDetail = {
+  releaseTrack: string;
+  versionKey: string;
   date: string;
   version: string;
   name: string;
@@ -62,6 +65,7 @@ export type VersionDetail = {
 
 export const versions: OpsVersionRow[] = [
   {
+    releaseTrack: 'operate_maintain_v2',
     date: '2026-03-01',
     version: 'v2.1.0',
     name: 'Guide Parity Gate (Core vs Template)',
@@ -110,6 +114,8 @@ export const workflows: WorkflowRow[] = [
 
 export const versionDetails: VersionDetail[] = [
   {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.0',
     date: '2026-03-01',
     version: 'v2.1.0',
     name: 'Guide Parity Gate (Core vs Template)',
