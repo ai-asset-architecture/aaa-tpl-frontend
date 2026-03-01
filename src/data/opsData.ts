@@ -69,6 +69,7 @@ type HistoricalVersionSeed = {
   name: string;
   status: 'PLANNED' | 'PASS';
   evidencePath: string;
+  extraEvidencePaths?: string[];
 };
 
 const historicalVersionSeeds: HistoricalVersionSeed[] = [
@@ -76,7 +77,18 @@ const historicalVersionSeeds: HistoricalVersionSeed[] = [
   { date: '2026-01-30', version: 'v2.0.4', name: 'Init Plan Presets', status: 'PASS', evidencePath: 'milestones/20260130_v2.0.4_init_plan_presets.md' },
   { date: '2026-01-30', version: 'v2.0.3', name: 'Repo-Checks Runtime Hint', status: 'PASS', evidencePath: 'milestones/20260130_v2.0.3_repo_checks_runtime_hint.md' },
   { date: '2026-01-29', version: 'v2.0.2', name: 'Nightly Governance Recovery', status: 'PASS', evidencePath: 'milestones/20260129_v2.0.2_nightly_governance_recovery.md' },
-  { date: '2026-01-29', version: 'v2.0', name: 'The Agent OS', status: 'PASS', evidencePath: 'milestones/20260129_v2.0_the_agent_os.md' },
+  {
+    date: '2026-01-29',
+    version: 'v2.0',
+    name: 'The Agent OS',
+    status: 'PASS',
+    evidencePath: 'milestones/20260129_v2.0_the_agent_os.md',
+    extraEvidencePaths: [
+      'milestones/20260129_omega_acceptance_summary.md',
+      'milestones/AAA_roadmap.md',
+      'milestones/AAA_ROADMAP_V2_V3_ENTERPRISE.md',
+    ],
+  },
   { date: '2026-01-29', version: 'v1.9', name: 'Supreme Court Interface', status: 'PASS', evidencePath: 'milestones/20260129_v1.9_supreme_court_interface.md' },
   { date: '2026-01-29', version: 'v1.8', name: 'Observability 2.0', status: 'PASS', evidencePath: 'milestones/20260129_v1.8_observability_2.0.md' },
   { date: '2026-01-29', version: 'v1.7', name: 'Federated Governance', status: 'PASS', evidencePath: 'milestones/20260129_v1.7_federated_governance.md' },
@@ -109,7 +121,7 @@ const historicalBackfilledVersions: OpsVersionRow[] = historicalVersionSeeds.map
   status: item.status === 'PLANNED' ? 'PLANNED' : 'PASS',
   availability: 'historical-backfilled-row',
   runRef: 'legacy:N/A',
-  evidenceRefs: [item.evidencePath],
+  evidenceRefs: [item.evidencePath, ...(item.extraEvidencePaths ?? [])],
 }));
 
 export const versions: OpsVersionRow[] = [
@@ -126,10 +138,10 @@ export const versions: OpsVersionRow[] = [
     runRef:
       'gh-actions:ai-asset-architecture/aaa-tpl-docs@.github/workflows/v2-1-0-guide-parity-gate.yml#22546764942',
     evidenceRefs: [
-      'docs/reviews/2026-03-02-v2.1.0-step4-dashboard-baseline.md',
-      'docs/reviews/2026-03-02-v2.1.0-step4-mcp-evidence.md',
-      'docs/reviews/2026-03-02-v2.1.0-step4-exit-checklist.md',
-      'docs/reviews/2026-03-02-v2.1.0-step4-completion-report.md',
+      'internal/development/reviews/2026-03-02-v2.1.0-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-03-02-v2.1.0-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-03-02-v2.1.0-step4-exit-checklist.md',
+      'internal/development/reviews/2026-03-02-v2.1.0-step4-completion-report.md',
     ],
   },
   {
@@ -189,6 +201,30 @@ export const workflows: WorkflowRow[] = [
     source: '來源：aaa-tpl-docs CI',
     mode: '自動+手動',
   },
+  {
+    createdUpdated: '建立 2026-01-29 / 更新 2026-03-02',
+    idPath: 'governance:legacy_trust_boundary_archive',
+    workflow: 'Legacy Trust-Boundary Archive Workflow',
+    trigger: 'historical backfill / index sync',
+    purpose: '將既有 v2.0.1 Trust Boundary 以歷史軌方式納入現行 registry/detail。',
+    objective: '讓 legacy 版本可在同一治理介面中可視、可追溯、可比對。',
+    useCase: 'legacy_trust_boundary historical records。',
+    triggerWhen: '歷史版本補齊、索引修復、治理追溯查核。',
+    source: '來源：aaa-tpl-docs internal/development',
+    mode: '手動回填 + 唯讀維護',
+  },
+  {
+    createdUpdated: '建立 2026-01-18 / 更新 2026-03-02',
+    idPath: 'governance:legacy_milestone_archive',
+    workflow: 'Legacy Milestone Archive Workflow',
+    trigger: 'historical backfill / index sync',
+    purpose: '將 v0.1~v2.0.5 既有 milestone 資產回填到版本清單與版本儀表板。',
+    objective: '補齊歷史版本可追溯性，避免僅有新流程版本可查。',
+    useCase: 'legacy_milestone historical records。',
+    triggerWhen: '歷史版本補齊、索引修復、治理追溯查核。',
+    source: '來源：aaa-tpl-docs internal/development',
+    mode: '手動回填 + 唯讀維護',
+  },
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
@@ -223,9 +259,9 @@ const explicitVersionDetails: VersionDetail[] = [
           'Step1 exit checklist 與 approval 已完成。',
         ],
         artifacts: [
-          'docs/plans/2026-03-01-v2.1.0-guide-parity-gate-plan.md',
-          'docs/audits/2026-03-01-v2.1.0-guide-parity-gate-audit.md',
-          'docs/reviews/2026-03-01-v2.1.0-guide-parity-gate-diff-paths.md',
+          'internal/development/plans/2026-03-01-v2.1.0-guide-parity-gate-plan.md',
+          'internal/development/audits/2026-03-01-v2.1.0-guide-parity-gate-audit.md',
+          'internal/development/reviews/2026-03-01-v2.1.0-guide-parity-gate-diff-paths.md',
         ],
       },
       {
@@ -240,7 +276,7 @@ const explicitVersionDetails: VersionDetail[] = [
         artifacts: [
           '.github/workflows/v2-1-0-guide-parity-gate.yml',
           'scripts/gates/verify_operate_maintain_guides.py',
-          'docs/reviews/2026-03-01-v2.1.0-step2-exit-checklist.md',
+          'internal/development/reviews/2026-03-01-v2.1.0-step2-exit-checklist.md',
         ],
       },
       {
@@ -252,8 +288,8 @@ const explicitVersionDetails: VersionDetail[] = [
           'milestone 與 evidence index 已完成封裝。',
         ],
         artifacts: [
-          'docs/evidence/v2.1.0/guide-parity-gate/asset-manifest.v0.1.json',
-          'docs/milestones/20260301_v2.1.0_guide-parity-gate.md',
+          'internal/development/evidence/v2.1.0/guide-parity-gate/asset-manifest.v0.1.json',
+          'internal/development/milestones/20260301_v2.1.0_guide-parity-gate.md',
         ],
       },
       {
@@ -265,9 +301,9 @@ const explicitVersionDetails: VersionDetail[] = [
           'completion report / exit checklist / version_index 同步完成。',
         ],
         artifacts: [
-          'docs/reviews/2026-03-02-v2.1.0-step4-mcp-evidence.md',
-          'docs/reviews/2026-03-02-v2.1.0-step4-exit-checklist.md',
-          'docs/reviews/2026-03-02-v2.1.0-step4-completion-report.md',
+          'internal/development/reviews/2026-03-02-v2.1.0-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-03-02-v2.1.0-step4-exit-checklist.md',
+          'internal/development/reviews/2026-03-02-v2.1.0-step4-completion-report.md',
         ],
       },
     ],
@@ -287,13 +323,13 @@ const explicitVersionDetails: VersionDetail[] = [
     ],
     outputs: [
       {
-        path: 'aaa-tpl-docs/docs/reviews/2026-03-02-v2.1.0-step4-mcp-evidence.md',
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-03-02-v2.1.0-step4-mcp-evidence.md',
         digest: 'sha256:step4-mcp-evidence',
         summary: 'MCP gate evidence including 9003 validation',
         note: '-',
       },
       {
-        path: 'aaa-tpl-docs/docs/reviews/2026-03-02-v2.1.0-step4-completion-report.md',
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-03-02-v2.1.0-step4-completion-report.md',
         digest: 'sha256:step4-completion-report',
         summary: 'Step4 completion claim with gate mapping',
         note: '-',
@@ -407,7 +443,217 @@ const explicitVersionDetails: VersionDetail[] = [
   },
 ];
 
+type LegacyInternalAssets = {
+  plans: string[];
+  audits: string[];
+  completion: string[];
+};
+
+const legacyInternalAssetsByVersion: Record<string, LegacyInternalAssets> = {
+  'v2.0.5': {
+    plans: ['internal/development/plans/2026-01-31-v2.0.5-repo-type-map-plan.md'],
+    audits: ['internal/development/audits/2026-01-31-v2.0.5-repo-type-map-audit.md'],
+    completion: ['internal/development/milestones/completion-reports/aaa_v2.0.5_completion_report_20260131.md'],
+  },
+  'v2.0.4': {
+    plans: ['internal/development/plans/2026-01-30-v2.0.4-init-plan-presets.md'],
+    audits: ['internal/development/audits/2026-01-30-v2.0.4-audit-presets.md'],
+    completion: ['internal/development/milestones/completion-reports/aaa_v2.0.4_completion_report_20260130.md'],
+  },
+  'v2.0.3': {
+    plans: [
+      'internal/development/plans/2026-01-30-v2.0.3-a2a-repo-checks-hints-plan.md',
+      'internal/development/plans/2026-01-30-v2.0.3-mcp-repo-checks-hints-plan.md',
+      'internal/development/plans/2026-01-30-v2.0.3-repo-checks-remote-hints-plan.md',
+    ],
+    audits: [
+      'internal/development/audits/2026-01-30-v2.0.3-a2a-repo-checks-hints-audit.md',
+      'internal/development/audits/2026-01-30-v2.0.3-mcp-repo-checks-hints-audit.md',
+      'internal/development/audits/2026-01-30-v2.0.3-repo-checks-remote-hints-audit.md',
+    ],
+    completion: ['internal/development/milestones/completion-reports/aaa_v2.0.3_completion_report_20260130.md'],
+  },
+  'v2.0.2': {
+    plans: [
+      'internal/development/plans/2026-01-29-v2.0.2-dashboard-visual-governance-plan.md',
+      'internal/development/plans/2026-01-29-v2.0.2-postmortem-assets-plan.md',
+      'internal/development/plans/2026-01-29-v2.0.2-runbook-recovery-plan.md',
+    ],
+    audits: [
+      'internal/development/audits/2026-01-29-v2.0.2-assets-audit.md',
+      'internal/development/audits/2026-01-29-v2.0.2-runbook-recovery-audit.md',
+    ],
+    completion: ['internal/development/milestones/completion-reports/aaa_v2.0.2_completion_report_20260129.md'],
+  },
+  'v2.0.1': {
+    plans: ['internal/development/plans/2026-01-29-v2.0.1-trust-boundary-plan.md'],
+    audits: ['internal/development/audits/2026-01-29-v2.0.1-init-audit.md'],
+    completion: ['internal/development/milestones/completion-reports/aaa_v2.0.1_completion_report_20260129.md'],
+  },
+  'v2.0': {
+    plans: [
+      'internal/development/plans/2026-01-28-architecture-evolution-v2.0.md',
+      'internal/development/plans/2026-01-28-update-policy-v2.0-alignment.md',
+      'internal/development/plans/2026-01-29-v2.0-init-plan.md',
+    ],
+    audits: ['internal/development/audits/2026-01-29-v2.0-initial-validation.md'],
+    completion: ['internal/development/milestones/completion-reports/aaa_v2.0_completion_report_20260129.md'],
+  },
+  'v1.9': {
+    plans: ['internal/development/plans/2026-01-29-v1.9-init-plan.md'],
+    audits: ['internal/development/audits/2026-01-29-v1.9-initial-validation.md'],
+    completion: ['internal/development/milestones/completion-reports/aaa_v1.9_completion_report_20260129.md'],
+  },
+  'v1.8': {
+    plans: ['internal/development/plans/2026-01-29-v1.8-init-plan.md'],
+    audits: ['internal/development/audits/2026-01-29-v1.8-initial-validation.md'],
+    completion: ['internal/development/milestones/completion-reports/aaa_v1.8_completion_report_20260129.md'],
+  },
+  'v1.7': {
+    plans: ['internal/development/plans/2026-01-29-v1.7-init-plan.md'],
+    audits: ['internal/development/audits/2026-01-29-v1.7-initial-validation.md'],
+    completion: ['internal/development/milestones/completion-reports/aaa_v1.7_completion_report_20260129.md'],
+  },
+  'v1.6': {
+    plans: ['internal/development/plans/2026-01-29-v1.6-init-plan.md'],
+    audits: ['internal/development/audits/2026-01-29-v1.6-initial-validation.md'],
+    completion: ['internal/development/milestones/completion-reports/aaa_v1.6_completion_report_20260129.md'],
+  },
+  'v1.5': {
+    plans: ['internal/development/plans/2026-01-28-v1.5-init-plan.md'],
+    audits: ['internal/development/audits/2026-01-28-v1.5-initial-validation.md'],
+    completion: ['internal/development/milestones/completion-reports/aaa_v1.5_completion_report_20260128.md'],
+  },
+  'v1.4': {
+    plans: ['internal/development/plans/2026-01-28-v1.4-init-plan.md'],
+    audits: ['internal/development/audits/2026-01-28-v1.4-initial-validation.md'],
+    completion: ['internal/development/milestones/completion-reports/aaa_v1.4_completion_report_20260128.md'],
+  },
+  'v1.3': {
+    plans: ['internal/development/plans/2026-01-28-v1.3-init-plan.md'],
+    audits: [
+      'internal/development/audits/2026-01-28-v1.3-initial-validation.md',
+      'internal/development/audits/v1.3_tech_debt_baseline.md',
+      'internal/development/audits/v1.3_tech_debt_repayment.md',
+    ],
+    completion: ['internal/development/milestones/completion-reports/aaa_v1.3_completion_report_20260128.md'],
+  },
+  'v1.2': {
+    plans: ['internal/development/plans/2026-01-28-v1.2-init-plan.md'],
+    audits: ['internal/development/audits/2026-01-28-v1.2-initial-validation.md'],
+    completion: ['internal/development/milestones/completion-reports/aaa_v1.2_completion_report_20260128.md'],
+  },
+  'v1.1': {
+    plans: [
+      'internal/development/plans/2026-01-28-aaa-v1.1-milestone-automation-plan.md',
+      'internal/development/plans/2026-01-28-aaa-v1.1-policy-enforcement-plan.md',
+      'internal/development/plans/2026-01-28-v1.1-ai-native-interface-plan.md',
+      'internal/development/plans/2026-01-28-v1.1-pillar-b-ai-native-interface-plan.md',
+    ],
+    audits: [
+      'internal/development/audits/2026-01-28-v1.1-pillar-b-validation-report.md',
+      'internal/development/audits/v1.1_initial_validation_report.md',
+    ],
+    completion: ['internal/development/milestones/completion-reports/aaa_v1.1_completion_report_20260128.md'],
+  },
+  'v1.0': {
+    plans: [
+      'internal/development/plans/2026-01-24-v1.0-implementation-plan.md',
+      'internal/development/plans/2026-01-24-v1.0-remediation-and-roadmap-reports.md',
+      'internal/development/plans/2026-01-24-v1.0-remediation-plan.md',
+    ],
+    audits: ['internal/development/audits/v1.0_final_validation_report.md'],
+    completion: ['internal/development/milestones/completion-reports/aaa_v1.0_completion_report_20260124.md'],
+  },
+  'v0.9': {
+    plans: [
+      'internal/development/plans/2026-01-24-aaa-v0.9-implementation-plan.md',
+      'internal/development/plans/2026-01-24-aaa-v0.9-plan.md',
+      'internal/development/plans/2026-01-24-milestones-index-and-v0.9-summaries.md',
+    ],
+    audits: [],
+    completion: [
+      'internal/development/milestones/completion-reports/aaa_v0.9_completion_report_20260123.md',
+      'internal/development/milestones/completion-reports/aaa_v0.9_gate_evidence_20260123.md',
+      'internal/development/milestones/completion-reports/aaa_v0.9_observability_upgrade_20260124.md',
+      'internal/development/milestones/completion-reports/aaa_v0.9_one_pager_20260123.md',
+    ],
+  },
+  'v0.8': {
+    plans: [
+      'internal/development/plans/2026-01-24-aaa-v0.8-design.md',
+      'internal/development/plans/2026-01-24-aaa-v0.8-plan.md',
+    ],
+    audits: [],
+    completion: ['internal/development/milestones/completion-reports/aaa_v0.8_completion_report_20260124.md'],
+  },
+  'v0.7': {
+    plans: ['internal/development/plans/2026-01-23-aaa-v0.7-plan.md'],
+    audits: [
+      'internal/development/audits/aaa_v0.7_delivery_summary_20260123.md',
+      'internal/development/audits/aaa_v0.7_one_pager_20260123.md',
+    ],
+    completion: [
+      'internal/development/milestones/completion-reports/aaa_v0.7_completion_report_20260123_0915.md',
+      'internal/development/milestones/completion-reports/aaa_v0.7_gate_evidence_20260123.md',
+    ],
+  },
+  'v0.6': {
+    plans: ['internal/development/plans/2026-01-22-aaa-v0.6-action-registry-plan.md'],
+    audits: [
+      'internal/development/audits/aaa_v0.6_gateA_failure_modes_20260123.md',
+      'internal/development/audits/aaa_v0.6_gate_runbook_20260122_2348.md',
+      'internal/development/audits/aaa_v0.6_gate_summary_for_diplomat.md',
+      'internal/development/audits/aaa_v0.6_readiness_gate_20260122_2310.md',
+    ],
+    completion: ['internal/development/milestones/completion-reports/aaa_v0.6_completion_report_20260122_2300.md'],
+  },
+  'v0.5': {
+    plans: [
+      'internal/development/plans/2026-01-21-aaa-v0.5-modular-runbooks-adr.md',
+      'internal/development/plans/2026-01-22-aaa-v0.5-complete-milestone-plan.md',
+      'internal/development/plans/2026-01-22-aaa-v0.5-reindex-assets-plan.md',
+      'internal/development/plans/2026-01-22-aaa-v0.5-runtime-engine-plan.md',
+    ],
+    audits: [],
+    completion: [
+      'internal/development/milestones/completion-reports/aaa_v0.5_completion_report_20260121_2348.md',
+      'internal/development/milestones/completion-reports/aaa_v0.5_reindex_backfill_report_20260122.md',
+      'internal/development/milestones/completion-reports/aaa_v0.5_upgrade_audit_runbooks_20260124.md',
+    ],
+  },
+  'v0.4': {
+    plans: [
+      'internal/development/plans/2026-01-21-aaa-v0.4-design.md',
+      'internal/development/plans/2026-01-21-aaa-v0.4-implementation-plan.md',
+      'internal/development/plans/2026-01-21-aaa-v0.4-post-init-assets-plan.md',
+    ],
+    audits: [],
+    completion: ['internal/development/milestones/completion-reports/aaa_v0.4_completion_report_20260121_2128.md'],
+  },
+  'v0.3': {
+    plans: ['internal/development/plans/2026-01-21-aaa-v0.3-plan.md'],
+    audits: [],
+    completion: ['internal/development/milestones/completion-reports/aaa_v0.3_completion_report_20260121_1737.md'],
+  },
+  'v0.2': {
+    plans: [],
+    audits: [],
+    completion: ['internal/development/milestones/completion-reports/aaa_v0.2_improvement_report_20260120_0322.md'],
+  },
+  'v0.1': {
+    plans: [],
+    audits: [],
+    completion: ['internal/development/milestones/completion-reports/v0.1_completion_report_20260118_1235.md'],
+  },
+};
+
 function buildBackfilledDetail(row: OpsVersionRow): VersionDetail {
+  const legacyAssets = legacyInternalAssetsByVersion[row.version] ?? { plans: [], audits: [], completion: [] };
+  const step1Artifacts = [...legacyAssets.plans, ...legacyAssets.audits];
+  const step2Artifacts = [...legacyAssets.completion];
+  const step3Artifacts = [...legacyAssets.audits, ...legacyAssets.completion];
+  const step4Artifacts = [...row.evidenceRefs, ...legacyAssets.completion];
   const isPlanned = row.status === 'PLANNED';
   const status = isPlanned ? 'PLANNED' : 'COMPLETED';
   const verify = isPlanned ? 'UNVERIFIED' : 'BACKFILLED';
@@ -428,43 +674,43 @@ function buildBackfilledDetail(row: OpsVersionRow): VersionDetail {
     workflowUseCase: 'Historical backfill for governance traceability.',
     status,
     verificationStatus: verify,
-    dataMode: 'historical-backfill',
+    dataMode: 'historical-backfill+internal-evidence',
     updatedAt: `${row.date}T23:59:59+08:00`,
     digest: `sha256:${row.releaseTrack}-${row.version}-backfill`,
     steps: [
       {
         step: 1,
         title: 'Step1 契約基線（Backfill）',
-        status: isPlanned ? 'PENDING' : 'PASS',
-        lines: ['歷史版本由 milestones/index 回填至版本索引。'],
-        artifacts: row.evidenceRefs,
+        status: step1Artifacts.length > 0 ? 'PASS' : 'PENDING',
+        lines: ['已從 internal/development 回填對應的 plan/audit，建立可審計基線。'],
+        artifacts: step1Artifacts.length > 0 ? step1Artifacts : row.evidenceRefs,
       },
       {
         step: 2,
         title: 'Step2 實作與執行（Backfill）',
-        status: isPlanned ? 'PENDING' : 'PASS',
-        lines: ['歷史資料僅提供回填證據，不重新執行舊版 pipeline。'],
-        artifacts: ['legacy:N/A'],
+        status: isPlanned ? 'PENDING' : step2Artifacts.length > 0 ? 'PASS' : 'PENDING',
+        lines: ['已回填 completion report 作為歷史執行結果證據。'],
+        artifacts: step2Artifacts.length > 0 ? step2Artifacts : ['legacy:N/A'],
       },
       {
         step: 3,
         title: 'Step3 資產保存（Backfill）',
-        status: 'PENDING',
-        lines: ['舊版未套用 v2 workflow 資產封裝格式。'],
-        artifacts: ['N/A (historical backfill)'],
+        status: step3Artifacts.length > 0 ? 'PASS' : 'PENDING',
+        lines: ['已回填 internal/development 證據資產；舊版若無標準封裝則以歷史資產替代。'],
+        artifacts: step3Artifacts.length > 0 ? step3Artifacts : ['N/A (historical backfill)'],
       },
       {
         step: 4,
         title: 'Step4 結案交付（Backfill）',
-        status: isPlanned ? 'PENDING' : 'PASS',
-        lines: ['歷史版本以索引列 + 里程碑證據提供可追溯性。'],
-        artifacts: row.evidenceRefs,
+        status: isPlanned ? 'PENDING' : step4Artifacts.length > 0 ? 'PASS' : 'PENDING',
+        lines: ['歷史版本以 milestone + completion report + index 列形成結案追溯鏈。'],
+        artifacts: step4Artifacts.length > 0 ? step4Artifacts : row.evidenceRefs,
       },
     ],
-    inputs: row.evidenceRefs.map((path) => ({
+    inputs: [...new Set([...row.evidenceRefs, ...legacyAssets.plans, ...legacyAssets.audits])].map((path) => ({
       path,
       digest: `sha256:${row.version}-input`,
-      summary: 'Historical source evidence',
+      summary: 'Historical source evidence (milestone/plan/audit)',
       note: 'backfilled',
     })),
     outputs: [
@@ -474,8 +720,14 @@ function buildBackfilledDetail(row: OpsVersionRow): VersionDetail {
         summary: 'Canonical version index row',
         note: 'backfilled',
       },
+      ...legacyAssets.completion.map((path) => ({
+        path: `aaa-tpl-docs/${path}`,
+        digest: `sha256:${row.version}-completion`,
+        summary: 'Legacy completion report evidence',
+        note: 'backfilled',
+      })),
     ],
-    references: row.evidenceRefs.map((path) => ({
+    references: [...new Set([...row.evidenceRefs, ...legacyAssets.plans, ...legacyAssets.audits, ...legacyAssets.completion])].map((path) => ({
       title: 'Historical Evidence',
       path,
       desc: 'Backfilled source record.',
