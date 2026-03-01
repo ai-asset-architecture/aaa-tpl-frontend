@@ -83,6 +83,22 @@ export const versions: OpsVersionRow[] = [
       'docs/reviews/2026-03-02-v2.1.0-step4-completion-report.md',
     ],
   },
+  {
+    releaseTrack: 'legacy_trust_boundary',
+    date: '2026-01-29',
+    version: 'v2.0.1',
+    name: 'Trust Boundary',
+    meaning: '建立 AAA 信任邊界基線（Identity/Scope/Replay/Revocation）與證據鏈。',
+    why: '作為 Connectivity Era 安全基座，確保 agent 連線與授權可驗證。',
+    landing: 'governance:trust_boundary_v1',
+    status: 'PASS',
+    availability: 'historical-backfilled-row',
+    runRef: 'legacy:N/A',
+    evidenceRefs: [
+      'milestones/20260129_v2.0.1_trust_boundary.md',
+      'internal/development/milestones/completion-reports/aaa_v2.0.1_completion_report_20260129.md',
+    ],
+  },
 ];
 
 export const workflows: WorkflowRow[] = [
@@ -238,6 +254,92 @@ export const versionDetails: VersionDetail[] = [
       reasonCode: 'STEP4_MCP_9003_PASS',
       dataSource: 'RUNTIME_TEMPLATE',
       dataDate: '2026-03-02',
+    },
+  },
+  {
+    releaseTrack: 'legacy_trust_boundary',
+    versionKey: 'legacy_trust_boundary::v2.0.1',
+    date: '2026-01-29',
+    version: 'v2.0.1',
+    name: 'Trust Boundary',
+    meaning: '建立 AAA 信任邊界基線與最小可審計證據鏈。',
+    why: '確保連線與授權具可驗證身份與 scope 控制。',
+    purpose: '把高風險操作納入可重放與可追責治理框架。',
+    targets: {
+      pass: 'Identity/Scope/Replay/Revocation 核心控制可運作且可審計。',
+      fail: '任何核心控制不可驗證、缺證據或無法重放。',
+    },
+    workflowName: 'governance:trust_boundary_v1',
+    workflowUseCase: '歷史安全基線版本，供治理回溯使用。',
+    status: 'COMPLETED',
+    verificationStatus: 'BACKFILLED',
+    dataMode: 'historical-milestone',
+    updatedAt: '2026-01-29T23:59:59+08:00',
+    digest: 'sha256:legacy-v2-0-1-trust-boundary',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線（Legacy）',
+        status: 'PASS',
+        lines: ['歷史版本以里程碑文檔回填，已建立基本治理描述。'],
+        artifacts: ['milestones/20260129_v2.0.1_trust_boundary.md'],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行（Legacy）',
+        status: 'PASS',
+        lines: ['完成信任邊界核心控制實作，證據由歷史完成報告承載。'],
+        artifacts: ['internal/development/milestones/completion-reports/aaa_v2.0.1_completion_report_20260129.md'],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存（Legacy）',
+        status: 'PENDING',
+        lines: ['舊版未採用 v2 workflow 標準資產封裝；目前僅提供 historical backfill。'],
+        artifacts: ['N/A (legacy track)'],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付（Legacy）',
+        status: 'PASS',
+        lines: ['歷史里程碑與 completion report 已可供追溯。'],
+        artifacts: ['milestones/20260129_v2.0.1_trust_boundary.md'],
+      },
+    ],
+    inputs: [
+      {
+        path: 'aaa-tpl-docs/milestones/20260129_v2.0.1_trust_boundary.md',
+        digest: 'sha256:legacy-milestone-v201',
+        summary: 'Legacy milestone source',
+        note: 'backfilled',
+      },
+    ],
+    outputs: [
+      {
+        path: 'aaa-tpl-docs/version_index.md',
+        digest: 'sha256:version-index-legacy-backfill',
+        summary: 'Legacy track row backfilled into canonical index',
+        note: 'historical-backfill',
+      },
+    ],
+    references: [
+      {
+        title: 'Legacy Milestone',
+        path: 'aaa-tpl-docs/milestones/20260129_v2.0.1_trust_boundary.md',
+        desc: 'Historical trust boundary milestone.',
+      },
+      {
+        title: 'Legacy Completion Report',
+        path: 'aaa-tpl-docs/internal/development/milestones/completion-reports/aaa_v2.0.1_completion_report_20260129.md',
+        desc: 'Historical completion report.',
+      },
+    ],
+    contractSummary: {
+      sourceOfTruth: 'AAA OPS REGISTRY (BACKFILLED)',
+      verdict: 'GO',
+      reasonCode: 'LEGACY_BACKFILLED',
+      dataSource: 'MILESTONE_BACKFILL',
+      dataDate: '2026-01-29',
     },
   },
 ];
