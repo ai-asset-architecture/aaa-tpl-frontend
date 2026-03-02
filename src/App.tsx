@@ -8,7 +8,7 @@ import {
   useNavigate,
   useParams,
 } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { versionDetails, versions, workflows } from './data/opsData';
 
 type Lang = 'zh-TW' | 'en';
@@ -31,6 +31,30 @@ function getLang(search: string): string {
 
 function normalizeLang(search: string): Lang {
   return getLang(search) === 'en' ? 'en' : 'zh-TW';
+}
+
+type VersionSortOrder = 'asc' | 'desc';
+
+function parseVersionParts(version: string): number[] {
+  return version
+    .replace(/^v/i, '')
+    .split('.')
+    .map((part) => Number.parseInt(part, 10))
+    .map((part) => (Number.isFinite(part) ? part : 0));
+}
+
+function compareVersion(a: string, b: string): number {
+  const aParts = parseVersionParts(a);
+  const bParts = parseVersionParts(b);
+  const maxLen = Math.max(aParts.length, bParts.length);
+  for (let i = 0; i < maxLen; i += 1) {
+    const av = aParts[i] ?? 0;
+    const bv = bParts[i] ?? 0;
+    if (av !== bv) {
+      return av - bv;
+    }
+  }
+  return 0;
 }
 
 const i18n: Record<Lang, Record<string, string>> = {
@@ -323,8 +347,14 @@ function RegistryPage() {
 }
 
 function VersionTable({ lang }: { lang: Lang }) {
+  const [sortOrder, setSortOrder] = useState<VersionSortOrder>('desc');
+  const sortedVersions = useMemo(() => {
+    const next = [...versions].sort((a, b) => compareVersion(a.version, b.version));
+    return sortOrder === 'desc' ? next.reverse() : next;
+  }, [sortOrder]);
+
   return (
-    <table className="ops-table">
+    <table className="ops-table ops-table-versions">
       <colgroup>
         <col className="col-idx" />
         <col className="col-v-main" />
@@ -335,14 +365,29 @@ function VersionTable({ lang }: { lang: Lang }) {
       <thead>
         <tr>
           <th>#</th>
-          <th>{t(lang, 'colDateVersionName')}</th>
+          <th>
+            <div className="th-sort-wrap">
+              <span>{t(lang, 'colDateVersionName')}</span>
+              <span className="th-sort-buttons" aria-label="sort by version">
+                <button
+                  type="button"
+                  className="th-sort-btn is-active"
+                  onClick={() => setSortOrder((prev) => (prev === 'desc' ? 'asc' : 'desc'))}
+                  aria-label={sortOrder === 'desc' ? 'sort version ascending' : 'sort version descending'}
+                  title={sortOrder === 'desc' ? 'sort version ascending' : 'sort version descending'}
+                >
+                  {sortOrder === 'desc' ? '↓' : '↑'}
+                </button>
+              </span>
+            </div>
+          </th>
           <th>{t(lang, 'colMeaning')}</th>
           <th>{t(lang, 'colStatus')}</th>
           <th>{t(lang, 'colAvailability')}</th>
         </tr>
       </thead>
       <tbody>
-        {versions.map((row, idx) => (
+        {sortedVersions.map((row, idx) => (
           <tr key={getVersionKey(row.releaseTrack, row.version)}>
             <td className="muted">{idx + 1}</td>
             <td>
@@ -382,7 +427,7 @@ function VersionTable({ lang }: { lang: Lang }) {
 
 function WorkflowTable({ lang }: { lang: Lang }) {
   return (
-    <table className="ops-table">
+    <table className="ops-table ops-table-workflows">
       <colgroup>
         <col className="col-idx" />
         <col className="col-w-dateid" />

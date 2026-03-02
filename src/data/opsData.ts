@@ -449,13 +449,13 @@ const explicitVersionDetails: VersionDetail[] = [
     ],
     inputs: [
       {
-        path: 'aaa-tpl-docs/version_index.md',
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
         digest: 'sha256:version-index-v201',
         summary: 'Version matrix source of status/evidence metadata',
         note: '-',
       },
       {
-        path: 'aaa-tpl-docs/workflow_index.md',
+        path: 'aaa-tpl-docs/ops/index/workflow_index.md',
         digest: 'sha256:workflow-index-v201',
         summary: 'Workflow registry source for ops-registry workflows tab',
         note: '-',
@@ -478,12 +478,12 @@ const explicitVersionDetails: VersionDetail[] = [
     references: [
       {
         title: 'Version Index Source',
-        path: 'aaa-tpl-docs/version_index.md',
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
         desc: 'Backfilled from canonical version index row.',
       },
       {
         title: 'Workflow Index Source',
-        path: 'aaa-tpl-docs/workflow_index.md',
+        path: 'aaa-tpl-docs/ops/index/workflow_index.md',
         desc: 'Derived from workflow registry raw index.',
       },
     ],
@@ -555,7 +555,7 @@ const explicitVersionDetails: VersionDetail[] = [
     ],
     outputs: [
       {
-        path: 'aaa-tpl-docs/version_index.md',
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
         digest: 'sha256:version-index-legacy-backfill',
         summary: 'Legacy track row backfilled into canonical index',
         note: 'historical-backfill',
@@ -855,7 +855,7 @@ function buildBackfilledDetail(row: OpsVersionRow): VersionDetail {
     })),
     outputs: [
       {
-        path: 'aaa-tpl-docs/version_index.md',
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
         digest: `sha256:${row.version}-row`,
         summary: 'Canonical version index row',
         note: 'backfilled',
