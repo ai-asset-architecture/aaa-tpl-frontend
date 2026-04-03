@@ -278,6 +278,25 @@ function compareVersionDesc(a: string, b: string): number {
 const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-04',
+    version: 'v2.1.1',
+    name: 'Tool Contract Executable Adoption + Command Registry Binding',
+    meaning: '將 tool contract 與 command registry 綁成可執行 validator 與 machine-parseable adoption bundle。',
+    why: '避免 canonical 規格退化為 prose-only 描述，並為後續 validator、dispatcher、preflight 建立 capability-law 地基。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-1-tool-command-adoption.yml#23957470365',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-04-v2.1.1-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-04-v2.1.1-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-04-v2.1.1-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-04-v2.1.1-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
     date: '2026-03-01',
     version: 'v2.1.0',
     name: 'Guide Parity Gate (Core vs Template)',
@@ -317,6 +336,18 @@ const unsortedVersions: OpsVersionRow[] = [
 export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => compareVersionDesc(a.version, b.version));
 
 export const workflows: WorkflowRow[] = [
+  {
+    createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
+    idPath: 'aaa-tools/.github/workflows/v2-1-1-tool-command-adoption.yml',
+    workflow: 'v2.1.1 Tool Command Adoption',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 aaa-tools 的 tool/command adoption validator 可執行，並能拒絕 prose-only binding。',
+    objective: 'PASS：pass/fail bundles 產生穩定結果且 remote run 成功；FAIL：tool refs、authority map 或 evidence targets 無法被 validator 收斂。',
+    useCase: 'v2.1.1 capability-law executable adoption 與 command binding smoke gate。',
+    triggerWhen: 'tool-command adoption validator、CLI binding、workflow smoke run 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
   {
     createdUpdated: '建立 2026-03-01 / 更新 2026-03-02',
     idPath: 'governance:operate_maintain_workflow_v2',
@@ -368,6 +399,161 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.1',
+    date: '2026-04-04',
+    version: 'v2.1.1',
+    name: 'Tool Contract Executable Adoption + Command Registry Binding',
+    meaning: '把 tool contract 與 command registry 從文字規格提升成可執行 adoption validator 與 machine-parseable binding。',
+    why: '讓 capability law 不再靠 prose 綁定，後續 validator、dispatcher、preflight 能直接消費穩定接口。',
+    purpose: '驗證 Step1 到 Step4 對 capability-law foundation 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單、dashboard 與 v2.1.1 detail 全部呈現一致 Step1~Step4 與 remote run evidence。',
+      fail: 'tool/command binding 無法在 detail 顯示完整 artifacts、run_ref 不一致，或 9003 任一路由不可達。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA 版本治理與 capability-law adoption 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-04T03:18:00+08:00',
+    digest: 'sha256:aaa-v2-1-1-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'tool contract、command registry 與 adoption bundle schema 已完成 canonical baseline。',
+          'version_index 已追加 v2.1.1 並完成 Step1 approval-ready 審核。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-04-v2.1.1-tool-command-adoption-plan.md',
+          'internal/development/audits/2026-04-04-v2.1.1-tool-command-adoption-audit.md',
+          'internal/development/reviews/2026-04-04-v2.1.1-tool-command-adoption-diff-paths.md',
+          'internal/development/reviews/2026-04-04-v2.1.1-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 tool-command adoption validator、CLI binding 與 remote workflow。',
+          'remote run_ref 已固定為 23957470365，並留下 retry/fix evidence。',
+          'Step2 exit checklist 已確認 executable adoption 與 machine-parseable binding 全項 PASS。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/tool_command_adoption.py',
+          'aaa-tools/aaa/governance_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/tests/test_tool_command_adoption.py',
+          'aaa-tools/.github/workflows/v2-1-1-tool-command-adoption.yml',
+          'internal/development/reviews/2026-04-04-v2.1.1-tool-command-adoption-run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.1-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 contract fixtures 與 Step2 runtime/evidence 已封裝為 v2.1.1 evidence bundle。',
+          'asset-manifest、result、index、run-evidence 與 milestone 摘要均已落檔。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.1/tool-command-adoption/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.1/tool-command-adoption/result.json',
+          'internal/development/evidence/v2.1.1/tool-command-adoption/index.json',
+          'internal/development/evidence/v2.1.1/tool-command-adoption/run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.1-step3-exit-checklist.md',
+          'internal/development/milestones/20260404_v2.1.1_tool-command-adoption.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 Global 5 頁 MCP 驗證。',
+          'v2.1.1 detail 可呈現 Step1~Step4 全區塊、artifacts 與 remote run evidence。',
+          'completion report、dashboard baseline、MCP evidence 與 exit checklist 已互相可追溯。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-04-v2.1.1-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-04-v2.1.1-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.1-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-04-v2.1.1-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [
+      {
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
+        digest: 'sha256:version-index-v211',
+        summary: 'Canonical version matrix for v2.1.1 status, run_ref, and evidence references',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/ops/index/workflow_index.md',
+        digest: 'sha256:workflow-index-v211',
+        summary: 'Workflow registry source for v2.1.1 adoption workflow row',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/contracts/ops/tool-command-adoption-bundle.v0.1.schema.json',
+        digest: 'sha256:tool-command-adoption-schema-v0-1',
+        summary: 'Canonical schema that defines machine-parseable adoption bundle shape',
+        note: '-',
+      },
+    ],
+    outputs: [
+      {
+        path: 'aaa-tpl-docs/internal/development/evidence/v2.1.1/tool-command-adoption/result.json',
+        digest: 'sha256:6776051347f6ff59e69ab1f55d954b1ac0a4acfe17017d0b59e42b08709ab9e2',
+        summary: 'Step3 preserved evidence result for v2.1.1 adoption bundle',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.1-step4-mcp-evidence.md',
+        digest: 'sha256:step4-mcp-evidence-v211',
+        summary: 'MCP gate evidence covering 9003 validation for the global 5 pages',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.1-step4-completion-report.md',
+        digest: 'sha256:step4-completion-report-v211',
+        summary: 'Step4 completion claim for capability-law foundation delivery',
+        note: '-',
+      },
+    ],
+    references: [
+      {
+        title: 'Version Index Source',
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
+        desc: 'Canonical row for v2.1.1 status, run_ref and evidence set.',
+      },
+      {
+        title: 'Workflow Index Source',
+        path: 'aaa-tpl-docs/ops/index/workflow_index.md',
+        desc: 'Canonical row for the v2.1.1 remote workflow.',
+      },
+      {
+        title: 'Cross-Version Governance Note',
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.1-v2.1.4-old-system-vs-new-system.md',
+        desc: 'Interpretive note for capability-law positioning within the four-version foundation.',
+      },
+    ],
+    contractSummary: {
+      sourceOfTruth: 'AAA OPS REGISTRY',
+      verdict: 'GO',
+      reasonCode: 'STEP4_MCP_9003_PASS',
+      dataSource: 'RUNTIME_TEMPLATE',
+      dataDate: '2026-04-04',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.0',
