@@ -279,6 +279,25 @@ const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-04',
+    version: 'v2.1.4',
+    name: 'Session Query Orchestration + Readiness State',
+    meaning: '將 session-facing readiness state 轉成可執行 validator，固定 orchestration mode、surface、state store 與 gating checks。',
+    why: '避免 readiness 判斷只靠操作者感覺，讓後續 operator surface 與 query orchestration 可依 readiness-law fail-closed。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-4-session-readiness-state.yml#23959496478',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-04-v2.1.4-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-04-v2.1.4-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-04-v2.1.4-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-04-v2.1.4-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-04',
     version: 'v2.1.3',
     name: 'Context Assembly Preflight',
     meaning: '將 context assembly 與 source precedence 轉成可執行 preflight validator，阻擋 local logs 非法升格為 current truth。',
@@ -376,6 +395,18 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 export const workflows: WorkflowRow[] = [
   {
     createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
+    idPath: 'aaa-tools/.github/workflows/v2-1-4-session-readiness-state.yml',
+    workflow: 'v2.1.4 Session Readiness State',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 session readiness validator 可辨識合法 orchestration mode、readiness surface、state store 與 gating checks。',
+    objective: 'PASS：readiness surface、state store 與 required checks 可被 validator 收斂；FAIL：invalid surface、缺少 required checks 或 gating 綁定錯誤。',
+    useCase: 'v2.1.4 readiness-law baseline smoke gate。',
+    triggerWhen: 'session readiness validator、CLI binding、workflow smoke run 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
+    createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
     idPath: 'aaa-tools/.github/workflows/v2-1-3-context-runtime-preflight.yml',
     workflow: 'v2.1.3 Context Runtime Preflight',
     trigger: 'push(main) + workflow_dispatch',
@@ -461,6 +492,161 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.4',
+    date: '2026-04-04',
+    version: 'v2.1.4',
+    name: 'Session Query Orchestration + Readiness State',
+    meaning: '把 session-facing readiness state 提升成可執行 validator，固定 orchestration mode、surface boundary、state store 與 gating semantics。',
+    why: '讓 readiness law 不再靠 operator 主觀判斷，後續 query orchestration 與 operator surface 都能在合法 readiness 上運作。',
+    purpose: '驗證 Step1 到 Step4 對 readiness-law foundation 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單、dashboard 與 v2.1.4 detail 全部呈現一致 Step1~Step4 與 remote readiness evidence。',
+      fail: 'readiness surface / gating checks 證據不完整、run_ref 不一致，或 9003 任一路由不可達。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA 版本治理與 readiness-law adoption 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-04T03:45:00+08:00',
+    digest: 'sha256:aaa-v2-1-4-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'session readiness schema 與 pass/fail fixtures 已完成 canonical baseline。',
+          'version_index 已追加 v2.1.4 並完成 Step1 approval-ready 審核。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-04-v2.1.4-session-readiness-state-plan.md',
+          'internal/development/audits/2026-04-04-v2.1.4-session-readiness-state-audit.md',
+          'internal/development/reviews/2026-04-04-v2.1.4-session-readiness-state-diff-paths.md',
+          'internal/development/reviews/2026-04-04-v2.1.4-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 session readiness validator、CLI binding 與 remote workflow。',
+          'remote run_ref 已固定為 23959496478，並完成 canonical pass/fail bundle smoke gate。',
+          'Step2 exit checklist 已確認 readiness-law executable adoption 全項 PASS。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/session_readiness_state.py',
+          'aaa-tools/aaa/governance_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/tests/test_session_readiness_state.py',
+          'aaa-tools/.github/workflows/v2-1-4-session-readiness-state.yml',
+          'internal/development/reviews/2026-04-04-v2.1.4-session-readiness-state-run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.4-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 session readiness contracts 與 Step2 runtime/evidence 已封裝為 v2.1.4 evidence bundle。',
+          'asset-manifest、result、index、run-evidence 與 milestone 摘要均已落檔。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.4/session-readiness-state/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.4/session-readiness-state/result.json',
+          'internal/development/evidence/v2.1.4/session-readiness-state/index.json',
+          'internal/development/evidence/v2.1.4/session-readiness-state/run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.4-step3-exit-checklist.md',
+          'internal/development/milestones/20260404_v2.1.4_session_readiness_state.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 Global 5 頁 MCP 驗證。',
+          'v2.1.4 detail 可呈現 Step1~Step4 全區塊、artifacts 與 remote readiness evidence。',
+          'completion report、dashboard baseline、MCP evidence 與 exit checklist 已互相可追溯。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-04-v2.1.4-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-04-v2.1.4-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.4-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-04-v2.1.4-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [
+      {
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
+        digest: 'sha256:version-index-v214',
+        summary: 'Canonical version matrix for v2.1.4 status, run_ref, and evidence references',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/ops/index/workflow_index.md',
+        digest: 'sha256:workflow-index-v214',
+        summary: 'Workflow registry source for v2.1.4 readiness workflow row',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/contracts/ops/session-readiness-state.v0.1.schema.json',
+        digest: 'sha256:session-readiness-state-schema-v0-1',
+        summary: 'Canonical schema that defines legal readiness surface, state store, and gating checks',
+        note: '-',
+      },
+    ],
+    outputs: [
+      {
+        path: 'aaa-tpl-docs/internal/development/evidence/v2.1.4/session-readiness-state/result.json',
+        digest: 'sha256:08abd1d6b4f39809c315097afc910a59cf0cf413f297418a61f7d79735ae2be8',
+        summary: 'Step3 preserved evidence result for v2.1.4 session readiness bundle',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.4-step4-mcp-evidence.md',
+        digest: 'sha256:step4-mcp-evidence-v214',
+        summary: 'MCP gate evidence covering 9003 validation for the global 5 pages',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.4-step4-completion-report.md',
+        digest: 'sha256:step4-completion-report-v214',
+        summary: 'Step4 completion claim for readiness-law foundation delivery',
+        note: '-',
+      },
+    ],
+    references: [
+      {
+        title: 'Version Index Source',
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
+        desc: 'Canonical row for v2.1.4 status, run_ref and evidence set.',
+      },
+      {
+        title: 'Workflow Index Source',
+        path: 'aaa-tpl-docs/ops/index/workflow_index.md',
+        desc: 'Canonical row for the v2.1.4 remote workflow.',
+      },
+      {
+        title: 'Cross-Version Governance Note',
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.1-v2.1.4-old-system-vs-new-system.md',
+        desc: 'Interpretive note for readiness-law positioning within the four-version foundation.',
+      },
+    ],
+    contractSummary: {
+      sourceOfTruth: 'AAA OPS REGISTRY',
+      verdict: 'GO',
+      reasonCode: 'STEP4_MCP_9003_PASS',
+      dataSource: 'RUNTIME_TEMPLATE',
+      dataDate: '2026-04-04',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.3',

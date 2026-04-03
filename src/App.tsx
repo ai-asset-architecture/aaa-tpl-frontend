@@ -332,10 +332,10 @@ function RegistryPage() {
         </div>
 
         <div className="ops-meta-grid">
-          <div>{t(lang, 'generatedAt')}: 2026-04-04T03:30:00+08:00</div>
+          <div>{t(lang, 'generatedAt')}: 2026-04-04T03:45:00+08:00</div>
           <div>{t(lang, 'generatorVersion')}: v1.1.0</div>
           <div>{t(lang, 'sourceCommit')}: local-template</div>
-          <div>{t(lang, 'inputDigest')}: sha256:aaa-ops-registry-v213-step4</div>
+          <div>{t(lang, 'inputDigest')}: sha256:aaa-ops-registry-v214-step4</div>
         </div>
 
         <div className="ops-table-wrap">
