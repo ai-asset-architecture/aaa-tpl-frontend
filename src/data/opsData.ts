@@ -279,6 +279,25 @@ const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-04',
+    version: 'v2.1.5',
+    name: 'Runtime Adoption Baseline',
+    meaning: '將 `readiness-inspect` 提升成第一條可執行 runtime adoption path，串接 capability、target、truth 與 readiness 四段治理鏈。',
+    why: '讓前四版治理底座第一次共同生效，避免後續 CLI 或 agent runtime 再退回 ad hoc command flow。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-5-runtime-adoption-baseline.yml#23961062180',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-04-v2.1.5-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-04-v2.1.5-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-04-v2.1.5-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-04-v2.1.5-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-04',
     version: 'v2.1.4',
     name: 'Session Query Orchestration + Readiness State',
     meaning: '將 session-facing readiness state 轉成可執行 validator，固定 orchestration mode、surface、state store 與 gating checks。',
@@ -395,6 +414,18 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 export const workflows: WorkflowRow[] = [
   {
     createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
+    idPath: 'aaa-tools/.github/workflows/v2-1-5-runtime-adoption-baseline.yml',
+    workflow: 'v2.1.5 Runtime Adoption Baseline',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 `readiness-inspect` adoption validator 可串接 capability、target、truth 與 readiness 四段治理鏈，並拒絕 workspace-root 與 truth contamination。',
+    objective: 'PASS：machine-parseable command binding、target legality、preflight 與 readiness output 可共同收斂；FAIL：workspace target、local truth promotion 或 readiness gating 缺口被阻擋。',
+    useCase: 'v2.1.5 runtime-adoption baseline smoke gate。',
+    triggerWhen: 'readiness-inspect validator、CLI binding、workflow smoke run 或 canonical fixtures 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
+    createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
     idPath: 'aaa-tools/.github/workflows/v2-1-4-session-readiness-state.yml',
     workflow: 'v2.1.4 Session Readiness State',
     trigger: 'push(main) + workflow_dispatch',
@@ -492,6 +523,162 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.5',
+    date: '2026-04-04',
+    version: 'v2.1.5',
+    name: 'Runtime Adoption Baseline',
+    meaning: '把 `readiness-inspect` 提升成第一條可執行 runtime adoption path，將 capability、target、truth 與 readiness 四段治理鏈串成單一路徑。',
+    why: '讓前四版治理底座第一次共同生效，後續 CLI、agent runtime 與 readiness gate 不必再重新發明語義。',
+    purpose: '驗證 Step1 到 Step4 對 runtime-adoption baseline 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單、dashboard 與 v2.1.5 detail 全部呈現一致 Step1~Step4 與 remote readiness-inspect evidence。',
+      fail: 'readiness-inspect run_ref、evidence bundle、frontend detail 或 9003 任一路由不一致或不可達。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA 版本治理與 runtime-adoption baseline 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-04T04:35:00+08:00',
+    digest: 'sha256:aaa-v2-1-5-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'runtime adoption schema 與 pass/fail fixtures 已完成 canonical baseline。',
+          'version_index 已追加 v2.1.5 並完成 Step1 approval-ready 審核。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-04-v2.1.5-runtime-adoption-baseline-plan.md',
+          'internal/development/audits/2026-04-04-v2.1.5-runtime-adoption-baseline-audit.md',
+          'internal/development/reviews/2026-04-04-v2.1.5-runtime-adoption-baseline-diff-paths.md',
+          'internal/development/reviews/2026-04-04-v2.1.5-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 readiness-inspect adoption validator、CLI binding 與 remote workflow。',
+          'remote run_ref 已固定為 23961062180，並完成 canonical pass/fail bundle smoke gate。',
+          'Step2 exit checklist 已確認 runtime-adoption executable baseline 全項 PASS。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/runtime_adoption_readiness_inspect.py',
+          'aaa-tools/aaa/tool_command_adoption.py',
+          'aaa-tools/aaa/governance_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/tests/test_runtime_adoption_readiness_inspect.py',
+          'aaa-tools/.github/workflows/v2-1-5-runtime-adoption-baseline.yml',
+          'internal/development/reviews/2026-04-04-v2.1.5-runtime-adoption-baseline-run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.5-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 runtime adoption contracts 與 Step2 runtime/evidence 已封裝為 v2.1.5 evidence bundle。',
+          'asset-manifest、result、index、run-evidence 與 milestone 摘要均已落檔。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.5/runtime-adoption-baseline/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.5/runtime-adoption-baseline/result.json',
+          'internal/development/evidence/v2.1.5/runtime-adoption-baseline/index.json',
+          'internal/development/evidence/v2.1.5/runtime-adoption-baseline/run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.5-step3-exit-checklist.md',
+          'internal/development/milestones/20260404_v2.1.5_runtime_adoption_baseline.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 Global 5 頁 MCP 驗證。',
+          'v2.1.5 detail 可呈現 Step1~Step4 全區塊、artifacts 與 remote readiness-inspect evidence。',
+          'completion report、dashboard baseline、MCP evidence 與 exit checklist 已互相可追溯。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-04-v2.1.5-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-04-v2.1.5-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.5-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-04-v2.1.5-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [
+      {
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
+        digest: 'sha256:version-index-v215',
+        summary: 'Canonical version matrix for v2.1.5 status, run_ref, and evidence references',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/ops/index/workflow_index.md',
+        digest: 'sha256:workflow-index-v215',
+        summary: 'Workflow registry source for v2.1.5 readiness-inspect workflow row',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/contracts/ops/runtime-adoption-readiness-inspect-bundle.v0.1.schema.json',
+        digest: 'sha256:runtime-adoption-readiness-inspect-schema-v0-1',
+        summary: 'Canonical schema that defines legal readiness-inspect binding, target scope, preflight chain, and readiness output',
+        note: '-',
+      },
+    ],
+    outputs: [
+      {
+        path: 'aaa-tpl-docs/internal/development/evidence/v2.1.5/runtime-adoption-baseline/result.json',
+        digest: 'sha256:be71bc82ef27012eb3f15c0768de6597d505dcfce5a9ab430a6b595aaa8402e9',
+        summary: 'Step3 preserved evidence result for v2.1.5 runtime adoption bundle',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.5-step4-mcp-evidence.md',
+        digest: 'sha256:step4-mcp-evidence-v215',
+        summary: 'MCP gate evidence covering 9003 validation for the global 5 pages',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.5-step4-completion-report.md',
+        digest: 'sha256:step4-completion-report-v215',
+        summary: 'Step4 completion claim for runtime-adoption baseline delivery',
+        note: '-',
+      },
+    ],
+    references: [
+      {
+        title: 'Version Index Source',
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
+        desc: 'Canonical row for v2.1.5 status, run_ref and evidence set.',
+      },
+      {
+        title: 'Workflow Index Source',
+        path: 'aaa-tpl-docs/ops/index/workflow_index.md',
+        desc: 'Canonical row for the v2.1.5 remote workflow.',
+      },
+      {
+        title: 'Cross-Version Governance Note',
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.1-v2.1.4-old-system-vs-new-system.md',
+        desc: 'Interpretive note describing the four-version foundation that v2.1.5 adopts at runtime.',
+      },
+    ],
+    contractSummary: {
+      sourceOfTruth: 'AAA OPS REGISTRY',
+      verdict: 'GO',
+      reasonCode: 'STEP4_MCP_9003_PASS',
+      dataSource: 'RUNTIME_TEMPLATE',
+      dataDate: '2026-04-04',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.4',
