@@ -279,6 +279,25 @@ const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-04',
+    version: 'v2.1.2',
+    name: 'Multi-Repo Worktree Identity Guard',
+    meaning: '將 multi-repo/worktree identity law 轉成可執行 validator 與 runtime guard baseline，明確 canonical repo root 與合法 worktree target。',
+    why: '避免 workspace root、repo root、worktree instance 混用，讓 target-law 從一開始就可驗證與可 fail-closed。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-2-multi-repo-worktree-identity.yml#23958123189',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-04-v2.1.2-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-04-v2.1.2-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-04-v2.1.2-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-04-v2.1.2-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-04',
     version: 'v2.1.1',
     name: 'Tool Contract Executable Adoption + Command Registry Binding',
     meaning: '將 tool contract 與 command registry 綁成可執行 validator 與 machine-parseable adoption bundle。',
@@ -336,6 +355,18 @@ const unsortedVersions: OpsVersionRow[] = [
 export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => compareVersionDesc(a.version, b.version));
 
 export const workflows: WorkflowRow[] = [
+  {
+    createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
+    idPath: 'aaa-tools/.github/workflows/v2-1-2-multi-repo-worktree-identity.yml',
+    workflow: 'v2.1.2 Multi Repo Worktree Identity',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 multi-repo/worktree identity validator 可辨識 canonical repo root、拒絕 workspace-level target，並產生穩定 pass/fail 結果。',
+    objective: 'PASS：canonical root 與 worktree target 可被 validator 收斂；FAIL：workspace-level target、缺 root 或未知 worktree target 被 fail-closed。',
+    useCase: 'v2.1.2 target-law validator 與 runtime guard baseline smoke gate。',
+    triggerWhen: 'identity validator、CLI binding、workflow smoke run 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
   {
     createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
     idPath: 'aaa-tools/.github/workflows/v2-1-1-tool-command-adoption.yml',
@@ -399,6 +430,161 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.2',
+    date: '2026-04-04',
+    version: 'v2.1.2',
+    name: 'Multi-Repo Worktree Identity Guard',
+    meaning: '把 multi-repo/worktree identity law 提升成可執行 validator 與 runtime guard baseline，固定 canonical repo root 與 worktree target legality。',
+    why: '讓 target law 不再靠操作者記憶，後續 mutation、preflight、readiness 都能在合法 target 上運作。',
+    purpose: '驗證 Step1 到 Step4 對 target-law foundation 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單、dashboard 與 v2.1.2 detail 全部呈現一致 Step1~Step4 與 remote identity-guard evidence。',
+      fail: 'canonical repo root / worktree target 證據不完整、run_ref 不一致，或 9003 任一路由不可達。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA 版本治理與 target-law adoption 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-04T03:02:00+08:00',
+    digest: 'sha256:aaa-v2-1-2-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'identity guard schema 與 pass/fail fixtures 已完成 canonical baseline。',
+          'version_index 已追加 v2.1.2 並完成 Step1 approval-ready 審核。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-04-v2.1.2-multi-repo-worktree-identity-plan.md',
+          'internal/development/audits/2026-04-04-v2.1.2-multi-repo-worktree-identity-audit.md',
+          'internal/development/reviews/2026-04-04-v2.1.2-multi-repo-worktree-identity-diff-paths.md',
+          'internal/development/reviews/2026-04-04-v2.1.2-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 multi-repo/worktree identity validator、CLI binding 與 remote workflow。',
+          'remote run_ref 已固定為 23958123189，並完成 canonical pass/fail bundle smoke gate。',
+          'Step2 exit checklist 已確認 target-law executable adoption 全項 PASS。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/multi_repo_worktree_identity.py',
+          'aaa-tools/aaa/governance_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/tests/test_multi_repo_worktree_identity.py',
+          'aaa-tools/.github/workflows/v2-1-2-multi-repo-worktree-identity.yml',
+          'internal/development/reviews/2026-04-04-v2.1.2-multi-repo-worktree-identity-run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.2-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 identity contracts 與 Step2 runtime/evidence 已封裝為 v2.1.2 evidence bundle。',
+          'asset-manifest、result、index、run-evidence 與 milestone 摘要均已落檔。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.2/multi-repo-worktree-identity/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.2/multi-repo-worktree-identity/result.json',
+          'internal/development/evidence/v2.1.2/multi-repo-worktree-identity/index.json',
+          'internal/development/evidence/v2.1.2/multi-repo-worktree-identity/run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.2-step3-exit-checklist.md',
+          'internal/development/milestones/20260404_v2.1.2_multi_repo_worktree_identity.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 Global 5 頁 MCP 驗證。',
+          'v2.1.2 detail 可呈現 Step1~Step4 全區塊、artifacts 與 remote identity-guard evidence。',
+          'completion report、dashboard baseline、MCP evidence 與 exit checklist 已互相可追溯。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-04-v2.1.2-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-04-v2.1.2-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.2-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-04-v2.1.2-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [
+      {
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
+        digest: 'sha256:version-index-v212',
+        summary: 'Canonical version matrix for v2.1.2 status, run_ref, and evidence references',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/ops/index/workflow_index.md',
+        digest: 'sha256:workflow-index-v212',
+        summary: 'Workflow registry source for v2.1.2 identity workflow row',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/contracts/ops/multi-repo-worktree-identity-guard.v0.1.schema.json',
+        digest: 'sha256:multi-repo-worktree-identity-schema-v0-1',
+        summary: 'Canonical schema that defines canonical repo root and worktree target legality',
+        note: '-',
+      },
+    ],
+    outputs: [
+      {
+        path: 'aaa-tpl-docs/internal/development/evidence/v2.1.2/multi-repo-worktree-identity/result.json',
+        digest: 'sha256:91361e7ee3627f89e0cab908bb30490f78fe16182208c8d83e726f20d8eb8ae1',
+        summary: 'Step3 preserved evidence result for v2.1.2 identity guard bundle',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.2-step4-mcp-evidence.md',
+        digest: 'sha256:step4-mcp-evidence-v212',
+        summary: 'MCP gate evidence covering 9003 validation for the global 5 pages',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.2-step4-completion-report.md',
+        digest: 'sha256:step4-completion-report-v212',
+        summary: 'Step4 completion claim for target-law foundation delivery',
+        note: '-',
+      },
+    ],
+    references: [
+      {
+        title: 'Version Index Source',
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
+        desc: 'Canonical row for v2.1.2 status, run_ref and evidence set.',
+      },
+      {
+        title: 'Workflow Index Source',
+        path: 'aaa-tpl-docs/ops/index/workflow_index.md',
+        desc: 'Canonical row for the v2.1.2 remote workflow.',
+      },
+      {
+        title: 'Cross-Version Governance Note',
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.1-v2.1.4-old-system-vs-new-system.md',
+        desc: 'Interpretive note for target-law positioning within the four-version foundation.',
+      },
+    ],
+    contractSummary: {
+      sourceOfTruth: 'AAA OPS REGISTRY',
+      verdict: 'GO',
+      reasonCode: 'STEP4_MCP_9003_PASS',
+      dataSource: 'RUNTIME_TEMPLATE',
+      dataDate: '2026-04-04',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.1',
