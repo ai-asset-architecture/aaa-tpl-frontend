@@ -279,6 +279,25 @@ const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-04',
+    version: 'v2.1.36',
+    name: 'GitHub Governance Topology Composition and Closeout',
+    meaning: '將 v2.1.30 ~ v2.1.35 的 topology support core 收斂為單一 closeout composition，固定 consumed topology stages 與 no-semantics-rejudgment boundary。',
+    why: '避免 topology support line 在 closeout 階段退回 narrative completeness，並阻擋 closeout 反向補寫 primary semantics。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-36-github-governance-topology-composition-and-closeout.yml#23978444400',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-04-v2.1.36-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-04-v2.1.36-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-04-v2.1.36-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-04-v2.1.36-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-04',
     version: 'v2.1.35',
     name: 'Topology-Aware Package Status and Repo Checks',
     meaning: '將 package status、evidence 與 repo-check 收斂為 topology-aware 的 machine-checkable result shape，固定 expected/detected/resolved topology 與 compliance status。',
@@ -754,6 +773,18 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 export const workflows: WorkflowRow[] = [
   {
     createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
+    idPath: 'aaa-tools/.github/workflows/v2-1-36-github-governance-topology-composition-and-closeout.yml',
+    workflow: 'v2.1.36 GitHub Governance Topology Composition and Closeout',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 topology support line closeout runtime 可固定 consumed topology stages、stage set hash 與 no-semantics-rejudgment boundary。',
+    objective: 'PASS：topology support core closeout 維持 machine-checkable consumed stages completeness，且不反向補寫 primary semantics；FAIL：closeout narrative 化、conditional expansion 被誤觸發或 dedicated-only 真相回流被阻擋。',
+    useCase: 'v2.1.36 github governance topology composition and closeout smoke gate。',
+    triggerWhen: 'topology closeout runtime、CLI binding、workflow smoke run 或 canonical fixtures 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
+    createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
     idPath: 'aaa-tools/.github/workflows/v2-1-35-topology-aware-package-status-and-repo-checks.yml',
     workflow: 'v2.1.35 Topology-Aware Package Status and Repo Checks',
     trigger: 'push(main) + workflow_dispatch',
@@ -1079,6 +1110,103 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.36',
+    date: '2026-04-04',
+    version: 'v2.1.36',
+    name: 'GitHub Governance Topology Composition and Closeout',
+    meaning: '把 v2.1.30 ~ v2.1.35 的 topology support line 收斂為單一 closeout composition，固定 consumed stages、stage set hash 與 no-rejudgment boundary。',
+    why: '避免 topology support line 在 closeout 階段退回 narrative completeness，並阻擋 closeout 補寫前序未定義 primary semantics。',
+    purpose: '驗證 Step1 到 Step4 對 topology support line closeout 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單與 v2.1.36 detail 全部呈現一致 Step1~Step4 與 topology closeout evidence。',
+      fail: 'run_ref、versions/workflows/detail 任一路由或 topology closeout evidence 不一致或不可達。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA GitHub governance topology support program 的 closeout 單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-04T20:28:00+08:00',
+    digest: 'sha256:aaa-v2-1-36-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'topology composition closeout schema 與 pass/fail fixtures 已完成 canonical baseline。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-04-v2.1.36-github-governance-topology-composition-and-closeout-plan.md',
+          'internal/development/audits/2026-04-04-v2.1.36-github-governance-topology-composition-and-closeout-audit.md',
+          'internal/development/reviews/2026-04-04-v2.1.36-github-governance-topology-composition-and-closeout-diff-paths.md',
+          'internal/development/reviews/2026-04-04-v2.1.36-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 topology composition closeout runtime、CLI binding 與 remote workflow。',
+          'remote run_ref 已固定為 23978444400，並完成 canonical pass/fail bundle smoke gate。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/github_governance_topology_composition_and_closeout.py',
+          'aaa-tools/aaa/governance_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/tests/test_github_governance_topology_composition_and_closeout.py',
+          'aaa-tools/.github/workflows/v2-1-36-github-governance-topology-composition-and-closeout.yml',
+          'internal/development/reviews/2026-04-04-v2.1.36-github-governance-topology-composition-and-closeout-run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.36-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 topology closeout contracts 與 Step2 runtime/evidence 已封裝為 v2.1.36 evidence bundle。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.36/github-governance-topology-composition-and-closeout/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.36/github-governance-topology-composition-and-closeout/result.json',
+          'internal/development/evidence/v2.1.36/github-governance-topology-composition-and-closeout/index.json',
+          'internal/development/evidence/v2.1.36/github-governance-topology-composition-and-closeout/run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.36-step3-exit-checklist.md',
+          'internal/development/milestones/20260404_v2.1.36_github_governance_topology_composition_and_closeout.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 MCP 3 頁驗證。',
+          'v2.1.36 detail 可呈現 Step1~Step4 區塊、topology closeout evidence 與 remote run trace。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-04-v2.1.36-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-04-v2.1.36-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.36-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-04-v2.1.36-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [],
+    outputs: [],
+    references: [],
+    contractSummary: {
+      sourceOfTruth: 'aaa-tpl-docs/ops/index/version_index.md',
+      verdict: 'PASS',
+      reasonCode: 'step4-pass-mcp9003-gate-satisfied',
+      dataSource: 'version-dashboard-record.v0.1',
+      dataDate: '2026-04-04',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.35',
