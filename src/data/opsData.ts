@@ -278,6 +278,25 @@ function compareVersionDesc(a: string, b: string): number {
 const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-05',
+    version: 'v2.1.37',
+    name: 'Public Package CLI Entry Surface',
+    meaning: '將 package runtime/application line 暴露為 remote client 可直接使用的 public `aaa package` CLI surface，固定 selection / resolution / status discovery。',
+    why: '解決 outside-in first-contact 缺少 public package entry 的問題，同時維持 CLI 僅為 access surface、不反向奪取 package truth authority。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-37-public-package-cli-entry-surface.yml#23984524564',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-05-v2.1.37-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-05-v2.1.37-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-05-v2.1.37-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-05-v2.1.37-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
     date: '2026-04-04',
     version: 'v2.1.36',
     name: 'GitHub Governance Topology Composition and Closeout',
@@ -924,6 +943,18 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 
 export const workflows: WorkflowRow[] = [
   {
+    createdUpdated: '建立 2026-04-05 / 更新 2026-04-05',
+    idPath: 'aaa-tools/.github/workflows/v2-1-37-public-package-cli-entry-surface.yml',
+    workflow: 'v2.1.37 Public Package CLI Entry Surface',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 public `aaa package` CLI surface 可固定 `select / resolve / status` 三個 read/select-oriented command，且不長成新的 authority source。',
+    objective: 'PASS：remote client 可透過 public CLI 取得 package selection、topology-aware resolution 與 layered status discovery；FAIL：alias package level、new truth center、mutation semantics 或第二套 interface surface 被阻擋。',
+    useCase: 'v2.1.37 public package cli entry surface smoke gate。',
+    triggerWhen: 'package command family、CLI binding、workflow smoke run 或 canonical fixtures 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
     createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
     idPath: 'aaa-tools/.github/workflows/v2-1-36-github-governance-topology-composition-and-closeout.yml',
     workflow: 'v2.1.36 GitHub Governance Topology Composition and Closeout',
@@ -1358,6 +1389,102 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.37',
+    date: '2026-04-05',
+    version: 'v2.1.37',
+    name: 'Public Package CLI Entry Surface',
+    meaning: '把 package runtime/application line 暴露成 remote client 可直接使用的 public `aaa package` CLI surface，固定 `select / resolve / status` 三個入口。',
+    why: '讓 outside-in first-contact 不再卡在 `No such command package`，同時維持 public CLI 僅為 access surface、不反向重寫 mother draft 或 package truth。',
+    purpose: '驗證 Step1 到 Step4 對 public package CLI entry surface 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單與 v2.1.37 detail 全部呈現一致 Step1~Step4 與 public package CLI evidence。',
+      fail: 'run_ref、versions/workflows/detail 任一路由或 package CLI evidence 不一致或不可達。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA outside-in follow-up line 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-05T13:20:00+08:00',
+    digest: 'sha256:aaa-v2-1-37-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'public package CLI entry surface schema 與 pass/fail fixtures 已完成 canonical baseline。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-05-v2.1.37-public-package-cli-entry-surface-plan.md',
+          'internal/development/audits/2026-04-05-v2.1.37-public-package-cli-entry-surface-audit.md',
+          'internal/development/reviews/2026-04-05-v2.1.37-public-package-cli-entry-surface-diff-paths.md',
+          'internal/development/reviews/2026-04-05-v2.1.37-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 public `aaa package select/resolve/status` command family，並維持 CLI 僅為 access surface。',
+          'remote run_ref 已固定為 23984524564，完成 unit tests 與 public package CLI smoke gate。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/package_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/tests/test_public_package_cli_entry_surface.py',
+          'aaa-tools/.github/workflows/v2-1-37-public-package-cli-entry-surface.yml',
+          'internal/development/reviews/2026-04-05-v2.1.37-public-package-cli-entry-surface-run-evidence.md',
+          'internal/development/reviews/2026-04-05-v2.1.37-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 public CLI contracts 與 Step2 runtime/workflow/evidence 已封裝為 v2.1.37 evidence bundle。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.37/public-package-cli-entry-surface/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.37/public-package-cli-entry-surface/result.json',
+          'internal/development/evidence/v2.1.37/public-package-cli-entry-surface/index.json',
+          'internal/development/evidence/v2.1.37/public-package-cli-entry-surface/run-evidence.md',
+          'internal/development/reviews/2026-04-05-v2.1.37-step3-exit-checklist.md',
+          'internal/development/milestones/20260405_v2.1.37_public_package_cli_entry_surface.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 MCP 3 頁驗證。',
+          'v2.1.37 detail 可呈現 Step1~Step4 區塊、public package CLI surface 與 remote run trace。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-05-v2.1.37-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-05-v2.1.37-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-05-v2.1.37-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-05-v2.1.37-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [],
+    outputs: [],
+    references: [],
+    contractSummary: {
+      sourceOfTruth: 'aaa-tpl-docs/ops/index/version_index.md',
+      verdict: 'PASS',
+      reasonCode: 'step4-pass-mcp9003-gate-satisfied',
+      dataSource: 'version-dashboard-record.v0.1',
+      dataDate: '2026-04-05',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.36',
