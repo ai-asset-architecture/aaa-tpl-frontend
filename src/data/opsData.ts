@@ -279,6 +279,25 @@ const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-04',
+    version: 'v2.1.11',
+    name: 'Permission and Authorization Runtime Gate',
+    meaning: '將既有 authority / permission model 收斂為 shared runtime gate，固定 decision mode 與 interactive/non-interactive boundary。',
+    why: '把 authority model 變成執行前可判定、可記錄、可審計的 runtime gate，避免 permission 判斷退回 path-local heuristic。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-11-permission-and-authorization-runtime-gate.yml#23972342747',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-04-v2.1.11-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-04-v2.1.11-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-04-v2.1.11-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-04-v2.1.11-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-04',
     version: 'v2.1.10',
     name: 'Query Orchestration Runtime Baseline',
     meaning: '將 shared dispatch、result/evidence gate 與 session snapshot 收斂成最小可重放的 query orchestration runtime loop。',
@@ -490,6 +509,18 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 export const workflows: WorkflowRow[] = [
   {
     createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
+    idPath: 'aaa-tools/.github/workflows/v2-1-11-permission-and-authorization-runtime-gate.yml',
+    workflow: 'v2.1.11 Permission and Authorization Runtime Gate',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 runtime permission gate 可把 authority / permission model 收斂為 shared execution gate，並固定 interactive 與 non-interactive boundary。',
+    objective: 'PASS：decision mode、authority boundary 與 non-interactive gate 可被 validator 收斂；FAIL：未授權 allow、non-interactive prompt 要求或 primary law 增殖被阻擋。',
+    useCase: 'v2.1.11 permission gate runtime smoke gate。',
+    triggerWhen: 'permission gate runtime、CLI binding、workflow smoke run 或 canonical fixtures 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
+    createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
     idPath: 'aaa-tools/.github/workflows/v2-1-10-query-orchestration-runtime.yml',
     workflow: 'v2.1.10 Query Orchestration Runtime',
     trigger: 'push(main) + workflow_dispatch',
@@ -647,6 +678,104 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.11',
+    date: '2026-04-04',
+    version: 'v2.1.11',
+    name: 'Permission and Authorization Runtime Gate',
+    meaning: '把 authority / permission 從靜態 contract 提升為 shared runtime gate，固定 decision mode 與 interactive/non-interactive boundary。',
+    why: '讓 AAA 在執行前就能判定、記錄並審計授權結果，而不是把 permission 判斷留給 path-local runtime 自由發揮。',
+    purpose: '驗證 Step1 到 Step4 對 permission and authorization runtime gate 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單、dashboard 與 v2.1.11 detail 全部呈現一致 Step1~Step4 與 permission gate evidence。',
+      fail: 'permission gate run_ref、evidence bundle、frontend detail 或 9003 任一路由不一致或不可達。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA 版本治理與 permission gate runtime 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-04T13:40:00+08:00',
+    digest: 'sha256:aaa-v2-1-11-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'permission gate schema 與 pass/fail fixtures 已完成 canonical baseline。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-04-v2.1.11-permission-and-authorization-runtime-gate-plan.md',
+          'internal/development/audits/2026-04-04-v2.1.11-permission-and-authorization-runtime-gate-audit.md',
+          'internal/development/reviews/2026-04-04-v2.1.11-permission-and-authorization-runtime-gate-diff-paths.md',
+          'internal/development/reviews/2026-04-04-v2.1.11-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 permission and authorization runtime gate、CLI binding 與 remote workflow。',
+          'remote run_ref 已固定為 23972342747，並完成 canonical pass/fail bundle smoke gate。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/permission_and_authorization_runtime_gate.py',
+          'aaa-tools/aaa/governance_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/aaa/__init__.py',
+          'aaa-tools/tests/test_permission_and_authorization_runtime_gate.py',
+          'aaa-tools/.github/workflows/v2-1-11-permission-and-authorization-runtime-gate.yml',
+          'internal/development/reviews/2026-04-04-v2.1.11-permission-and-authorization-runtime-gate-run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.11-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 permission gate contracts 與 Step2 runtime/evidence 已封裝為 v2.1.11 evidence bundle。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.11/permission-and-authorization-runtime-gate/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.11/permission-and-authorization-runtime-gate/result.json',
+          'internal/development/evidence/v2.1.11/permission-and-authorization-runtime-gate/index.json',
+          'internal/development/evidence/v2.1.11/permission-and-authorization-runtime-gate/run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.11-step3-exit-checklist.md',
+          'internal/development/milestones/20260404_v2.1.11_permission_and_authorization_runtime_gate.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 Global 5 頁 MCP 驗證。',
+          'v2.1.11 detail 可呈現 Step1~Step4 全區塊、artifacts 與 permission gate evidence。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-04-v2.1.11-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-04-v2.1.11-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.11-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-04-v2.1.11-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [],
+    outputs: [],
+    references: [],
+    contractSummary: {
+      sourceOfTruth: 'AAA OPS REGISTRY',
+      verdict: 'GO',
+      reasonCode: 'STEP4_MCP_9003_PASS',
+      dataSource: 'RUNTIME_TEMPLATE',
+      dataDate: '2026-04-04',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.10',
