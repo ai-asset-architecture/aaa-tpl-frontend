@@ -279,6 +279,25 @@ const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-05',
+    version: 'v2.1.39',
+    name: 'Local Sandbox Bootstrap Profile',
+    meaning: '把 `local_sandbox` 正式化為 supported bootstrap execution profile，允許 remote client 先在 disposable local sandbox 驗證而不依賴 GitHub side effects。',
+    why: '解決 outside-in first-contact 只能把 dry-run 當半正式替代品的問題，同時維持 profile 不構成第二條 public supported path。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-39-local-sandbox-bootstrap-profile.yml#23985117013',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-05-v2.1.39-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-05-v2.1.39-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-05-v2.1.39-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-05-v2.1.39-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-05',
     version: 'v2.1.38',
     name: 'Supported Bootstrap Gate Chain',
     meaning: '將 bootstrap/runtime capabilities 收斂成唯一 public canonical supported path，並明確排除 environment profile 與 diagnostic chain。',
@@ -963,6 +982,18 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 export const workflows: WorkflowRow[] = [
   {
     createdUpdated: '建立 2026-04-05 / 更新 2026-04-05',
+    idPath: 'aaa-tools/.github/workflows/v2-1-39-local-sandbox-bootstrap-profile.yml',
+    workflow: 'v2.1.39 Local Sandbox Bootstrap Profile',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 `local_sandbox` 作為 supported bootstrap execution profile，可在 disposable local workspace 產出 bootstrap report 與 candidate evidence bundle，同時不改寫 public supported path count。',
+    objective: 'PASS：remote client 可用 local sandbox profile 做本地 bootstrap 驗證，且 `dry_run_alias=false`、`profile_is_public_supported_path=false`；FAIL：profile 被實作成 dry-run alias、需要 GitHub side effects 或被誤當成第二條 public path。',
+    useCase: 'v2.1.39 local sandbox bootstrap profile smoke gate。',
+    triggerWhen: 'bootstrap profile wiring、init local-sandbox support、workflow smoke run 或 canonical fixtures 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
+    createdUpdated: '建立 2026-04-05 / 更新 2026-04-05',
     idPath: 'aaa-tools/.github/workflows/v2-1-38-supported-bootstrap-gate-chain.yml',
     workflow: 'v2.1.38 Supported Bootstrap Gate Chain',
     trigger: 'push(main) + workflow_dispatch',
@@ -1420,6 +1451,105 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.39',
+    date: '2026-04-05',
+    version: 'v2.1.39',
+    name: 'Local Sandbox Bootstrap Profile',
+    meaning: '把 `local_sandbox` 從 ad hoc dry-run 習慣提升為 supported bootstrap execution profile，並明確切開 profile 與 canonical public path。',
+    why: '讓 remote client 可先在 `/tmp` 或其他 disposable workspace 做 outside-in 驗證，同時保留 explicit promotion boundary。',
+    purpose: '驗證 Step1 到 Step4 對 local sandbox bootstrap profile 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單與 v2.1.39 detail 全部呈現一致 Step1~Step4、local_sandbox profile contract、candidate evidence bundle boundary 與 remote run evidence。',
+      fail: 'run_ref、versions/workflows/detail 任一路由不一致，或 `dry_run_alias`、`profile_is_public_supported_path`、`requires_explicit_promotion` 任一信號缺失。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA outside-in follow-up line 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-05T14:55:00+08:00',
+    digest: 'sha256:aaa-v2-1-39-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'local sandbox bootstrap profile schema 與 pass/fail fixtures 已完成 canonical baseline。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-05-v2.1.39-local-sandbox-bootstrap-profile-plan.md',
+          'internal/development/audits/2026-04-05-v2.1.39-local-sandbox-bootstrap-profile-audit.md',
+          'internal/development/reviews/2026-04-05-v2.1.39-local-sandbox-bootstrap-profile-diff-paths.md',
+          'internal/development/reviews/2026-04-05-v2.1.39-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 `aaa bootstrap profile --profile local_sandbox` 與 `aaa init --profile local_sandbox`，可在 disposable workspace 產出 report 與 candidate evidence bundle。',
+          'AI_COMMAND_CENTER 與 PROJECT_PLAYBOOK 已對齊 `local_sandbox` 只是 execution profile，不構成第二條 public supported path；remote run_ref 已固定為 23985117013。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/bootstrap_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/aaa/init_commands.py',
+          'aaa-tools/tests/test_local_sandbox_bootstrap_profile.py',
+          'aaa-tools/.github/workflows/v2-1-39-local-sandbox-bootstrap-profile.yml',
+          'internal/development/reviews/2026-04-05-v2.1.39-local-sandbox-bootstrap-profile-run-evidence.md',
+          'internal/development/reviews/2026-04-05-v2.1.39-step2-exit-checklist.md',
+          'AI_COMMAND_CENTER.md',
+          'PROJECT_PLAYBOOK.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 contracts 與 Step2 runtime/workflow/evidence 已封裝為 v2.1.39 preserved bundle。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.39/local-sandbox-bootstrap-profile/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.39/local-sandbox-bootstrap-profile/result.json',
+          'internal/development/evidence/v2.1.39/local-sandbox-bootstrap-profile/index.json',
+          'internal/development/evidence/v2.1.39/local-sandbox-bootstrap-profile/run-evidence.md',
+          'internal/development/reviews/2026-04-05-v2.1.39-step3-exit-checklist.md',
+          'internal/development/milestones/20260405_v2.1.39_local_sandbox_bootstrap_profile.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 MCP 3 頁驗證。',
+          'v2.1.39 detail 可呈現 `local_sandbox` profile contract、explicit promotion boundary 與 remote run trace。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-05-v2.1.39-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-05-v2.1.39-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-05-v2.1.39-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-05-v2.1.39-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [],
+    outputs: [],
+    references: [],
+    contractSummary: {
+      sourceOfTruth: 'aaa-tpl-docs/ops/index/version_index.md',
+      verdict: 'PASS',
+      reasonCode: 'step4-pass-mcp9003-gate-satisfied',
+      dataSource: 'version-dashboard-record.v0.1',
+      dataDate: '2026-04-05',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.38',
