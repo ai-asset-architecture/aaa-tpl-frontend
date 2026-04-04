@@ -279,6 +279,25 @@ const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-04',
+    version: 'v2.1.35',
+    name: 'Topology-Aware Package Status and Repo Checks',
+    meaning: '將 package status、evidence 與 repo-check 收斂為 topology-aware 的 machine-checkable result shape，固定 expected/detected/resolved topology 與 compliance status。',
+    why: '避免 repo_local 被誤報缺 .github repo，並讓 hybrid 合規不再依賴 narrative。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-35-topology-aware-package-status-and-repo-checks.yml#23978265972',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-04-v2.1.35-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-04-v2.1.35-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-04-v2.1.35-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-04-v2.1.35-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-04',
     version: 'v2.1.34',
     name: 'Topology-Aware Materialization and Bootstrap Mapping',
     meaning: '將 materialization / bootstrap mapping 收斂為 topology-aware placement rules，並固定 workflow/codeowners target scope。',
@@ -735,6 +754,18 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 export const workflows: WorkflowRow[] = [
   {
     createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
+    idPath: 'aaa-tools/.github/workflows/v2-1-35-topology-aware-package-status-and-repo-checks.yml',
+    workflow: 'v2.1.35 Topology-Aware Package Status and Repo Checks',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 topology-aware package status / repo-check runtime 可固定 expected/detected/resolved topology、compliance status 與 misplaced/missing governance assets。',
+    objective: 'PASS：repo_local 不再被誤報缺 .github repo，hybrid 合規需經 machine-checkable resolved topology 與 compliance 收斂；FAIL：narrative 合規、prose fallback 或 dedicated-only 假設被阻擋。',
+    useCase: 'v2.1.35 topology-aware package status and repo checks smoke gate。',
+    triggerWhen: 'package status runtime、repo-check binding、workflow smoke run 或 canonical fixtures 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
+    createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
     idPath: 'aaa-tools/.github/workflows/v2-1-34-topology-aware-materialization-and-bootstrap-mapping.yml',
     workflow: 'v2.1.34 Topology-Aware Materialization and Bootstrap Mapping',
     trigger: 'push(main) + workflow_dispatch',
@@ -1048,6 +1079,103 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.35',
+    date: '2026-04-04',
+    version: 'v2.1.35',
+    name: 'Topology-Aware Package Status and Repo Checks',
+    meaning: '把 package status、evidence 與 repo-check 補成 topology-aware runtime，固定 expected/detected/resolved topology、compliance status 與 misplaced/missing governance assets。',
+    why: '讓 repo_local 不再被 dedicated-only 假設誤傷，並把 hybrid 合規判斷收斂為 machine-checkable 結果。',
+    purpose: '驗證 Step1 到 Step4 對 topology-aware package status / repo-check 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單與 v2.1.35 detail 全部呈現一致 Step1~Step4 與 topology-aware package status/repo-check evidence。',
+      fail: 'run_ref、versions/workflows/detail 任一路由或 topology-aware package status/repo-check evidence 不一致或不可達。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA GitHub governance topology support program 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-04T20:00:00+08:00',
+    digest: 'sha256:aaa-v2-1-35-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'topology-aware package status/repo-check schema 與 pass/fail fixtures 已完成 canonical baseline。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-04-v2.1.35-topology-aware-package-status-and-repo-checks-plan.md',
+          'internal/development/audits/2026-04-04-v2.1.35-topology-aware-package-status-and-repo-checks-audit.md',
+          'internal/development/reviews/2026-04-04-v2.1.35-topology-aware-package-status-and-repo-checks-diff-paths.md',
+          'internal/development/reviews/2026-04-04-v2.1.35-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 topology-aware package status/repo-check runtime、CLI binding 與 remote workflow。',
+          'remote run_ref 已固定為 23978265972，並完成 canonical pass/fail bundle smoke gate。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/topology_aware_package_status_and_repo_checks.py',
+          'aaa-tools/aaa/governance_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/tests/test_topology_aware_package_status_and_repo_checks.py',
+          'aaa-tools/.github/workflows/v2-1-35-topology-aware-package-status-and-repo-checks.yml',
+          'internal/development/reviews/2026-04-04-v2.1.35-topology-aware-package-status-and-repo-checks-run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.35-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 topology-aware status/check contracts 與 Step2 runtime/evidence 已封裝為 v2.1.35 evidence bundle。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.35/topology-aware-package-status-and-repo-checks/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.35/topology-aware-package-status-and-repo-checks/result.json',
+          'internal/development/evidence/v2.1.35/topology-aware-package-status-and-repo-checks/index.json',
+          'internal/development/evidence/v2.1.35/topology-aware-package-status-and-repo-checks/run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.35-step3-exit-checklist.md',
+          'internal/development/milestones/20260404_v2.1.35_topology_aware_package_status_and_repo_checks.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 MCP 3 頁驗證。',
+          'v2.1.35 detail 可呈現 Step1~Step4 區塊、topology-aware package status/repo-check evidence 與 remote run trace。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-04-v2.1.35-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-04-v2.1.35-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.35-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-04-v2.1.35-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [],
+    outputs: [],
+    references: [],
+    contractSummary: {
+      sourceOfTruth: 'aaa-tpl-docs/ops/index/version_index.md',
+      verdict: 'PASS',
+      reasonCode: 'step4-pass-mcp9003-gate-satisfied',
+      dataSource: 'version-dashboard-record.v0.1',
+      dataDate: '2026-04-04',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.34',
