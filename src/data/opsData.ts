@@ -279,6 +279,25 @@ const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-05',
+    version: 'v2.1.38',
+    name: 'Supported Bootstrap Gate Chain',
+    meaning: '將 bootstrap/runtime capabilities 收斂成唯一 public canonical supported path，並明確排除 environment profile 與 diagnostic chain。',
+    why: '避免 remote client 仍需自行拼裝半官方命令鏈，並固定 `path count = 1` 的 public entry semantics。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-38-supported-bootstrap-gate-chain.yml#23984874514',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-05-v2.1.38-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-05-v2.1.38-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-05-v2.1.38-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-05-v2.1.38-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-05',
     version: 'v2.1.37',
     name: 'Public Package CLI Entry Surface',
     meaning: '將 package runtime/application line 暴露為 remote client 可直接使用的 public `aaa package` CLI surface，固定 selection / resolution / status discovery。',
@@ -944,6 +963,18 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 export const workflows: WorkflowRow[] = [
   {
     createdUpdated: '建立 2026-04-05 / 更新 2026-04-05',
+    idPath: 'aaa-tools/.github/workflows/v2-1-38-supported-bootstrap-gate-chain.yml',
+    workflow: 'v2.1.38 Supported Bootstrap Gate Chain',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 canonical supported bootstrap path 只存在一條，並明確把 environment profile 與 diagnostic sequence 排除出 public path count。',
+    objective: 'PASS：remote client 可讀取唯一 canonical bootstrap chain；FAIL：半官方 alternate path、第二條 supported path 或 profile/path 混線被阻擋。',
+    useCase: 'v2.1.38 supported bootstrap gate chain smoke gate。',
+    triggerWhen: 'bootstrap entry docs、CLI wiring、workflow smoke run 或 canonical fixtures 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
+    createdUpdated: '建立 2026-04-05 / 更新 2026-04-05',
     idPath: 'aaa-tools/.github/workflows/v2-1-37-public-package-cli-entry-surface.yml',
     workflow: 'v2.1.37 Public Package CLI Entry Surface',
     trigger: 'push(main) + workflow_dispatch',
@@ -1389,6 +1420,104 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.38',
+    date: '2026-04-05',
+    version: 'v2.1.38',
+    name: 'Supported Bootstrap Gate Chain',
+    meaning: '把 public bootstrap/runtime capabilities 收斂成唯一 canonical supported path，並把 environment profile 與 diagnostic sequence 排除出 supported path count。',
+    why: '讓 remote client 不再需要自行拼裝命令鏈，且避免把 `local_sandbox` 誤讀成第二條 supported path。',
+    purpose: '驗證 Step1 到 Step4 對 supported bootstrap gate chain 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單與 v2.1.38 detail 全部呈現一致 Step1~Step4、唯一 canonical path 與 remote run evidence。',
+      fail: 'run_ref、versions/workflows/detail 任一路由或 supported path evidence 不一致、path count 不為 1 或 profile/path 混線。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA outside-in follow-up line 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-05T14:10:00+08:00',
+    digest: 'sha256:aaa-v2-1-38-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'supported bootstrap gate chain schema 與 pass/fail fixtures 已完成 canonical baseline。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-05-v2.1.38-supported-bootstrap-gate-chain-plan.md',
+          'internal/development/audits/2026-04-05-v2.1.38-supported-bootstrap-gate-chain-audit.md',
+          'internal/development/reviews/2026-04-05-v2.1.38-supported-bootstrap-gate-chain-diff-paths.md',
+          'internal/development/reviews/2026-04-05-v2.1.38-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 `aaa bootstrap supported-path` command，固定 exactly-one canonical supported bootstrap chain。',
+          'AI_COMMAND_CENTER 與 PROJECT_PLAYBOOK 已對齊同一條 public path；remote run_ref 已固定為 23984874514。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/bootstrap_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/tests/test_supported_bootstrap_gate_chain.py',
+          'aaa-tools/.github/workflows/v2-1-38-supported-bootstrap-gate-chain.yml',
+          'internal/development/reviews/2026-04-05-v2.1.38-supported-bootstrap-gate-chain-run-evidence.md',
+          'internal/development/reviews/2026-04-05-v2.1.38-step2-exit-checklist.md',
+          'AI_COMMAND_CENTER.md',
+          'PROJECT_PLAYBOOK.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 contracts 與 Step2 runtime/workflow/evidence 已封裝為 v2.1.38 preserved bundle。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.38/supported-bootstrap-gate-chain/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.38/supported-bootstrap-gate-chain/result.json',
+          'internal/development/evidence/v2.1.38/supported-bootstrap-gate-chain/index.json',
+          'internal/development/evidence/v2.1.38/supported-bootstrap-gate-chain/run-evidence.md',
+          'internal/development/reviews/2026-04-05-v2.1.38-step3-exit-checklist.md',
+          'internal/development/milestones/20260405_v2.1.38_supported_bootstrap_gate_chain.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 MCP 3 頁驗證。',
+          'v2.1.38 detail 可呈現唯一 canonical path、profile exclusion 與 remote run trace。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-05-v2.1.38-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-05-v2.1.38-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-05-v2.1.38-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-05-v2.1.38-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [],
+    outputs: [],
+    references: [],
+    contractSummary: {
+      sourceOfTruth: 'aaa-tpl-docs/ops/index/version_index.md',
+      verdict: 'PASS',
+      reasonCode: 'step4-pass-mcp9003-gate-satisfied',
+      dataSource: 'version-dashboard-record.v0.1',
+      dataDate: '2026-04-05',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.37',
