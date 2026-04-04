@@ -401,7 +401,7 @@ const unsortedVersions: OpsVersionRow[] = [
     status: 'PASS',
     availability: 'step4-pass-mcp9003-gate-satisfied',
     runRef:
-      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-31-topology-aware-init-plan-validation.yml#23977187809',
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-31-topology-aware-init-plan-validation.yml#23983899794',
     evidenceRefs: [
       'internal/development/reviews/2026-04-04-v2.1.31-step4-dashboard-baseline.md',
       'internal/development/reviews/2026-04-04-v2.1.31-step4-mcp-evidence.md',
@@ -1959,7 +1959,7 @@ const explicitVersionDetails: VersionDetail[] = [
     status: 'COMPLETED',
     verificationStatus: 'VERIFIED',
     dataMode: 'runtime-template',
-    updatedAt: '2026-04-04T18:44:00+08:00',
+    updatedAt: '2026-04-05T11:40:00+08:00',
     digest: 'sha256:aaa-v2-1-31-step4-pass-mcp9003',
     steps: [
       {
@@ -1982,8 +1982,8 @@ const explicitVersionDetails: VersionDetail[] = [
         title: 'Step2 實作與執行',
         status: 'PASS',
         lines: [
-          'aaa-tools 已上線 topology-aware init validation runtime、CLI binding、plan schema/runbook 與 remote workflow。',
-          'remote run_ref 已固定為 23977187809，並完成 canonical pass/fail bundle smoke gate。',
+          'aaa-tools 已補上 init boundary signal、hybrid structure-pass signaling 與缺失 log-dir 自動建立行為。',
+          'remote run_ref 已固定為 23983899794，並完成 canonical pass/fail bundle smoke gate 與 init boundary behavior 測試。',
         ],
         artifacts: [
           'aaa-tools/aaa/topology_aware_init_plan_validation.py',
@@ -1994,6 +1994,7 @@ const explicitVersionDetails: VersionDetail[] = [
           'aaa-tools/runbooks/init/plan.v2.0.json',
           'aaa-tools/tests/test_init_plan_presets.py',
           'aaa-tools/tests/test_topology_aware_init_plan_validation.py',
+          'aaa-tools/tests/test_init_topology_boundary_behavior.py',
           'aaa-tools/.github/workflows/v2-1-31-topology-aware-init-plan-validation.yml',
           'internal/development/reviews/2026-04-04-v2.1.31-topology-aware-init-plan-validation-run-evidence.md',
           'internal/development/reviews/2026-04-04-v2.1.31-step2-exit-checklist.md',
@@ -2021,7 +2022,7 @@ const explicitVersionDetails: VersionDetail[] = [
         status: 'PASS',
         lines: [
           'localhost:9003 已通過 MCP 3 頁驗證。',
-          'v2.1.31 detail 可呈現 Step1~Step4 區塊、topology-aware init validation evidence 與 remote run trace。',
+          'v2.1.31 detail 可呈現 Step1~Step4 區塊、init boundary signal、downstream topology adjudication ref 與 remote run trace。',
         ],
         artifacts: [
           'internal/development/reviews/2026-04-04-v2.1.31-step4-dashboard-baseline.md',
