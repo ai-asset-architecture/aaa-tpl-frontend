@@ -306,7 +306,7 @@ const unsortedVersions: OpsVersionRow[] = [
     status: 'PASS',
     availability: 'step4-pass-mcp9003-gate-satisfied',
     runRef:
-      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-35-topology-aware-package-status-and-repo-checks.yml#23978265972',
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-35-topology-aware-package-status-and-repo-checks.yml#23984236626',
     evidenceRefs: [
       'internal/development/reviews/2026-04-04-v2.1.35-step4-dashboard-baseline.md',
       'internal/development/reviews/2026-04-04-v2.1.35-step4-mcp-evidence.md',
@@ -1473,7 +1473,7 @@ const explicitVersionDetails: VersionDetail[] = [
     status: 'COMPLETED',
     verificationStatus: 'VERIFIED',
     dataMode: 'runtime-template',
-    updatedAt: '2026-04-04T20:00:00+08:00',
+    updatedAt: '2026-04-05T12:35:00+08:00',
     digest: 'sha256:aaa-v2-1-35-step4-pass-mcp9003',
     steps: [
       {
@@ -1496,8 +1496,8 @@ const explicitVersionDetails: VersionDetail[] = [
         title: 'Step2 實作與執行',
         status: 'PASS',
         lines: [
-          'aaa-tools 已上線 topology-aware package status/repo-check runtime、CLI binding 與 remote workflow。',
-          'remote run_ref 已固定為 23978265972，並完成 canonical pass/fail bundle smoke gate。',
+          'aaa-tools 已補上 topology-aware package status/repo-check derived results，固定 structure acceptance、topology completion 與 downstream adjudication point。',
+          'remote run_ref 已固定為 23984236626，並完成 canonical pass/fail bundle smoke gate 與 topology completion 分層驗證。',
         ],
         artifacts: [
           'aaa-tools/aaa/topology_aware_package_status_and_repo_checks.py',
@@ -1531,7 +1531,7 @@ const explicitVersionDetails: VersionDetail[] = [
         status: 'PASS',
         lines: [
           'localhost:9003 已通過 MCP 3 頁驗證。',
-          'v2.1.35 detail 可呈現 Step1~Step4 區塊、topology-aware package status/repo-check evidence 與 remote run trace。',
+          'v2.1.35 detail 可呈現 Step1~Step4 區塊、structure acceptance / topology completion 分層結果與 remote run trace。',
         ],
         artifacts: [
           'internal/development/reviews/2026-04-04-v2.1.35-step4-dashboard-baseline.md',
