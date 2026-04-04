@@ -1729,7 +1729,7 @@ const explicitVersionDetails: VersionDetail[] = [
   },
   {
     releaseTrack: 'operate_maintain_v2',
-    versionKey: 'operate_maintain_v2::v2.1.19',
+    versionKey: 'operate_maintain_v2::v2.1.23',
     date: '2026-04-04',
     version: 'v2.1.23',
     name: 'Offering Package Selection Runtime Baseline',
