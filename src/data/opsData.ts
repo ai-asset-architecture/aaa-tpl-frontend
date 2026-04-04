@@ -279,6 +279,25 @@ const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-04',
+    version: 'v2.1.8',
+    name: 'Result Artifact Eligibility and Evidence Promotion Gate',
+    meaning: '將 runtime result 收斂為 artifact eligibility 與 evidence promotion gate，固定 promotion decision source。',
+    why: '不是所有 result 都能進 evidence，更不是所有 evidence 都能 promotion；本版將守門條件變成可執行 runtime gate。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-8-result-evidence-promotion-gate.yml#23971353018',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-04-v2.1.8-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-04-v2.1.8-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-04-v2.1.8-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-04-v2.1.8-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-04',
     version: 'v2.1.7',
     name: 'Shared Command Dispatch Runtime Baseline',
     meaning: '將 `readiness-inspect` 與 `repo-check` 兩條既有 adoption consumer 收斂到 shared command dispatch runtime。',
@@ -433,6 +452,18 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 export const workflows: WorkflowRow[] = [
   {
     createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
+    idPath: 'aaa-tools/.github/workflows/v2-1-8-result-evidence-promotion-gate.yml',
+    workflow: 'v2.1.8 Result Evidence Promotion Gate',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 result artifact eligibility 與 evidence promotion gate 可拒絕人工敘事單獨決策，並固定 promotion decision source。',
+    objective: 'PASS：eligible/ineligible、promotion decision source 與 evidence gate 可被 validator 收斂；FAIL：manual review note、completion report 或 operator narrative 單獨決策 promotion 會被阻擋。',
+    useCase: 'v2.1.8 result/evidence promotion gate smoke gate。',
+    triggerWhen: 'promotion gate runtime、CLI binding、workflow smoke run 或 canonical fixtures 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
+    createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
     idPath: 'aaa-tools/.github/workflows/v2-1-7-shared-command-dispatch.yml',
     workflow: 'v2.1.7 Shared Command Dispatch',
     trigger: 'push(main) + workflow_dispatch',
@@ -554,6 +585,162 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.8',
+    date: '2026-04-04',
+    version: 'v2.1.8',
+    name: 'Result Artifact Eligibility and Evidence Promotion Gate',
+    meaning: '把 runtime result 收斂為 artifact eligibility 與 evidence promotion gate，固定 promotion decision source，並阻擋人工敘事單獨決策 promotion。',
+    why: '讓 truth/evidence 守門從文件約束提升成可執行 runtime gate，避免 command output 自動被升格為正式 evidence。',
+    purpose: '驗證 Step1 到 Step4 對 result/evidence promotion gate 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單、dashboard 與 v2.1.8 detail 全部呈現一致 Step1~Step4 與 promotion gate evidence。',
+      fail: 'promotion gate run_ref、evidence bundle、frontend detail 或 9003 任一路由不一致或不可達。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA 版本治理與 result/evidence promotion gate 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-04T12:40:00+08:00',
+    digest: 'sha256:aaa-v2-1-8-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'promotion gate schema 與 pass/fail fixtures 已完成 canonical baseline。',
+          'version_index 已追加 v2.1.8 並完成 Step1 approval-ready 審核。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-04-v2.1.8-result-artifact-eligibility-and-evidence-promotion-gate-plan.md',
+          'internal/development/audits/2026-04-04-v2.1.8-result-artifact-eligibility-and-evidence-promotion-gate-audit.md',
+          'internal/development/reviews/2026-04-04-v2.1.8-result-artifact-eligibility-and-evidence-promotion-gate-diff-paths.md',
+          'internal/development/reviews/2026-04-04-v2.1.8-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 result/evidence promotion gate runtime、CLI binding 與 remote workflow。',
+          'remote run_ref 已固定為 23971353018，並完成 canonical pass/fail bundle smoke gate。',
+          'Step2 exit checklist 已確認 promotion gate runtime baseline 全項 PASS。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/result_artifact_eligibility_and_evidence_promotion_gate.py',
+          'aaa-tools/aaa/governance_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/aaa/__init__.py',
+          'aaa-tools/tests/test_result_artifact_eligibility_and_evidence_promotion_gate.py',
+          'aaa-tools/.github/workflows/v2-1-8-result-evidence-promotion-gate.yml',
+          'internal/development/reviews/2026-04-04-v2.1.8-result-evidence-promotion-gate-run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.8-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 promotion gate contracts 與 Step2 runtime/evidence 已封裝為 v2.1.8 evidence bundle。',
+          'asset-manifest、result、index、run-evidence 與 milestone 摘要均已落檔。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.8/result-evidence-promotion-gate/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.8/result-evidence-promotion-gate/result.json',
+          'internal/development/evidence/v2.1.8/result-evidence-promotion-gate/index.json',
+          'internal/development/evidence/v2.1.8/result-evidence-promotion-gate/run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.8-step3-exit-checklist.md',
+          'internal/development/milestones/20260404_v2.1.8_result_evidence_promotion_gate.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 Global 5 頁 MCP 驗證。',
+          'v2.1.8 detail 可呈現 Step1~Step4 全區塊、artifacts 與 promotion gate evidence。',
+          'completion report、dashboard baseline、MCP evidence 與 exit checklist 已互相可追溯。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-04-v2.1.8-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-04-v2.1.8-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.8-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-04-v2.1.8-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [
+      {
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
+        digest: 'sha256:version-index-v218',
+        summary: 'Canonical version matrix for v2.1.8 status, run_ref, and evidence references',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/ops/index/workflow_index.md',
+        digest: 'sha256:workflow-index-v218',
+        summary: 'Workflow registry source for v2.1.8 promotion gate workflow row',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/contracts/ops/result-artifact-eligibility-and-evidence-promotion-gate.v0.1.schema.json',
+        digest: 'sha256:result-evidence-promotion-gate-schema-v0-1',
+        summary: 'Canonical schema that defines result artifact eligibility, promotion decision source, and evidence gate constraints',
+        note: '-',
+      },
+    ],
+    outputs: [
+      {
+        path: 'aaa-tpl-docs/internal/development/evidence/v2.1.8/result-evidence-promotion-gate/result.json',
+        digest: 'sha256:step3-result-v218',
+        summary: 'Step3 preserved evidence result for v2.1.8 result/evidence promotion gate bundle',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.8-step4-mcp-evidence.md',
+        digest: 'sha256:step4-mcp-evidence-v218',
+        summary: 'MCP gate evidence covering 9003 validation for the global 5 pages',
+        note: '-',
+      },
+      {
+        path: 'aaa-tpl-docs/internal/development/reviews/2026-04-04-v2.1.8-step4-completion-report.md',
+        digest: 'sha256:step4-completion-report-v218',
+        summary: 'Step4 completion claim for result/evidence promotion gate delivery',
+        note: '-',
+      },
+    ],
+    references: [
+      {
+        title: 'Version Index Source',
+        path: 'aaa-tpl-docs/ops/index/version_index.md',
+        desc: 'Canonical row for v2.1.8 status, run_ref and evidence set.',
+      },
+      {
+        title: 'Workflow Index Source',
+        path: 'aaa-tpl-docs/ops/index/workflow_index.md',
+        desc: 'Canonical row for the v2.1.8 remote workflow.',
+      },
+      {
+        title: 'Promotion Gate Contract',
+        path: 'aaa-tpl-docs/internal/development/contracts/ops/result-artifact-eligibility-and-evidence-promotion-gate.v0.1.schema.json',
+        desc: 'Canonical result/evidence promotion gate baseline consumed by the v2.1.8 runtime.',
+      },
+    ],
+    contractSummary: {
+      sourceOfTruth: 'AAA OPS REGISTRY',
+      verdict: 'GO',
+      reasonCode: 'STEP4_MCP_9003_PASS',
+      dataSource: 'RUNTIME_TEMPLATE',
+      dataDate: '2026-04-04',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.7',
