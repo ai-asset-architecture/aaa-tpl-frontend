@@ -279,6 +279,25 @@ const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-04',
+    version: 'v2.1.19',
+    name: 'Runtime Composition Root and System Assembly',
+    meaning: '將 v2.1.11 ~ v2.1.18 的 mandatory runtime planes 收斂為單一 composition root，固定 bootstrap order 與 consumed plane set。',
+    why: '完成 mandatory core absorption line 的 system assembly closeout，讓 shared runtime core 真正形成 operator-usable closure，且不讓 composition root 反向重判既有 plane semantics。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-19-runtime-composition-root-and-system-assembly.yml#23974219465',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-04-v2.1.19-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-04-v2.1.19-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-04-v2.1.19-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-04-v2.1.19-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-04',
     version: 'v2.1.18',
     name: 'Skill and Plugin Extension Runtime Baseline',
     meaning: '將 skill / plugin / extension 收斂為 shared extension plane，固定 manifest、load/register boundary 與 trust boundary。',
@@ -640,6 +659,18 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 export const workflows: WorkflowRow[] = [
   {
     createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
+    idPath: 'aaa-tools/.github/workflows/v2-1-19-runtime-composition-root-and-system-assembly.yml',
+    workflow: 'v2.1.19 Runtime Composition Root and System Assembly',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 composition root runtime 可固定 bootstrap order、consumed runtime plane set、startup boundary 與 closeout assembly boundary。',
+    objective: 'PASS：八個 mandatory core runtime planes 以顯式集合與固定順序被收斂；FAIL：plane 缺漏、conditional expansion 混入或 composition root 反向重判 semantics 被阻擋。',
+    useCase: 'v2.1.19 runtime composition root and system assembly smoke gate。',
+    triggerWhen: 'composition root runtime、CLI binding、workflow smoke run 或 canonical fixtures 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
+    createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
     idPath: 'aaa-tools/.github/workflows/v2-1-18-skill-and-plugin-extension-runtime.yml',
     workflow: 'v2.1.18 Skill and Plugin Extension Runtime',
     trigger: 'push(main) + workflow_dispatch',
@@ -893,6 +924,104 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.19',
+    date: '2026-04-04',
+    version: 'v2.1.19',
+    name: 'Runtime Composition Root and System Assembly',
+    meaning: '把 v2.1.11 ~ v2.1.18 的 mandatory runtime planes 從平行存在收斂為單一 composition root 與 system assembly closeout。',
+    why: '讓 AAA 的 shared runtime core 真正形成 operator-usable closure，同時阻擋 composition root 反向重判 consumed plane semantics 或混入 conditional expansion。',
+    purpose: '驗證 Step1 到 Step4 對 runtime composition root and system assembly 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單、dashboard 與 v2.1.19 detail 全部呈現一致 Step1~Step4 與 composition root evidence。',
+      fail: 'composition root run_ref、consumed plane completeness、frontend detail 或 9003 任一路由不一致或不可達。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA 版本治理與 mandatory core absorption line closeout 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-04T16:02:00+08:00',
+    digest: 'sha256:aaa-v2-1-19-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'runtime composition root schema 與 pass/fail fixtures 已完成 canonical baseline。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-04-v2.1.19-runtime-composition-root-and-system-assembly-plan.md',
+          'internal/development/audits/2026-04-04-v2.1.19-runtime-composition-root-and-system-assembly-audit.md',
+          'internal/development/reviews/2026-04-04-v2.1.19-runtime-composition-root-and-system-assembly-diff-paths.md',
+          'internal/development/reviews/2026-04-04-v2.1.19-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 composition root validator、CLI binding 與 remote workflow。',
+          'remote run_ref 已固定為 23974219465，並完成 canonical pass/fail bundle smoke gate。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/runtime_composition_root_and_system_assembly.py',
+          'aaa-tools/aaa/governance_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/aaa/__init__.py',
+          'aaa-tools/tests/test_runtime_composition_root_and_system_assembly.py',
+          'aaa-tools/.github/workflows/v2-1-19-runtime-composition-root-and-system-assembly.yml',
+          'internal/development/reviews/2026-04-04-v2.1.19-runtime-composition-root-and-system-assembly-run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.19-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 composition root contracts 與 Step2 runtime/evidence 已封裝為 v2.1.19 evidence bundle。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.19/runtime-composition-root-and-system-assembly/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.19/runtime-composition-root-and-system-assembly/result.json',
+          'internal/development/evidence/v2.1.19/runtime-composition-root-and-system-assembly/index.json',
+          'internal/development/evidence/v2.1.19/runtime-composition-root-and-system-assembly/run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.19-step3-exit-checklist.md',
+          'internal/development/milestones/20260404_v2.1.19_runtime_composition_root_and_system_assembly.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 Global 5 頁 MCP 驗證。',
+          'v2.1.19 detail 可呈現 Step1~Step4 全區塊、consumed plane completeness 與 composition root evidence。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-04-v2.1.19-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-04-v2.1.19-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.19-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-04-v2.1.19-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [],
+    outputs: [],
+    references: [],
+    contractSummary: {
+      sourceOfTruth: 'aaa-tpl-docs/ops/index/version_index.md',
+      verdict: 'PASS',
+      reasonCode: 'step4-pass-mcp9003-gate-satisfied',
+      dataSource: 'version-dashboard-record.v0.1',
+      dataDate: '2026-04-04',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.18',
