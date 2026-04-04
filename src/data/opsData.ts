@@ -279,6 +279,25 @@ const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-04',
+    version: 'v2.1.17',
+    name: 'Agent Delegation and Task Lifecycle Runtime Baseline',
+    meaning: '將 task / delegation / handoff 收斂為 shared execution lifecycle，固定 verification closure 與 ownership scope。',
+    why: '讓 AAA 有可驗證的 task lifecycle，而不是只有 command 被執行過的痕跡，並阻擋未驗證 handoff 完成。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-17-agent-delegation-and-task-lifecycle-runtime.yml#23973580941',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-04-v2.1.17-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-04-v2.1.17-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-04-v2.1.17-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-04-v2.1.17-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-04',
     version: 'v2.1.16',
     name: 'Workflow and Runbook Orchestration Runtime Baseline',
     meaning: '將單 command orchestration 擴成 workflow / runbook runtime，固定 step graph、handoff artifact 與 workflow-level gate。',
@@ -604,6 +623,18 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 export const workflows: WorkflowRow[] = [
   {
     createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
+    idPath: 'aaa-tools/.github/workflows/v2-1-17-agent-delegation-and-task-lifecycle-runtime.yml',
+    workflow: 'v2.1.17 Agent Delegation and Task Lifecycle Runtime',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 delegation lifecycle runtime 可固定 task state、ownership scope、handoff evidence 與 verification closure。',
+    objective: 'PASS：verification-required task 的 handoff closure 可被 validator 收斂；FAIL：未經 verification 即 handoff 完成、ownership 越界或 prose fallback 被阻擋。',
+    useCase: 'v2.1.17 agent delegation and task lifecycle runtime smoke gate。',
+    triggerWhen: 'delegation lifecycle runtime、CLI binding、workflow smoke run 或 canonical fixtures 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
+    createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
     idPath: 'aaa-tools/.github/workflows/v2-1-16-workflow-and-runbook-orchestration-runtime.yml',
     workflow: 'v2.1.16 Workflow and Runbook Orchestration Runtime',
     trigger: 'push(main) + workflow_dispatch',
@@ -833,6 +864,104 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.17',
+    date: '2026-04-04',
+    version: 'v2.1.17',
+    name: 'Agent Delegation and Task Lifecycle Runtime Baseline',
+    meaning: '把 task state、ownership scope、handoff evidence 與 verification closure 從 Step1 contract 收斂為 shared execution lifecycle plane。',
+    why: '讓 AAA 有可驗證的 task lifecycle 與 handoff closure，同時避免未驗證 delegation 結果被視為完成。',
+    purpose: '驗證 Step1 到 Step4 對 agent delegation and task lifecycle runtime 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單、dashboard 與 v2.1.17 detail 全部呈現一致 Step1~Step4 與 delegation lifecycle evidence。',
+      fail: 'delegation lifecycle run_ref、evidence bundle、frontend detail 或 9003 任一路由不一致或不可達。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA 版本治理與 shared delegation lifecycle plane 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-04T14:51:18+08:00',
+    digest: 'sha256:aaa-v2-1-17-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'agent delegation and task lifecycle schema 與 pass/fail fixtures 已完成 canonical baseline。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-04-v2.1.17-agent-delegation-and-task-lifecycle-runtime-baseline-plan.md',
+          'internal/development/audits/2026-04-04-v2.1.17-agent-delegation-and-task-lifecycle-runtime-baseline-audit.md',
+          'internal/development/reviews/2026-04-04-v2.1.17-agent-delegation-and-task-lifecycle-runtime-baseline-diff-paths.md',
+          'internal/development/reviews/2026-04-04-v2.1.17-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 delegation lifecycle validator、CLI binding 與 remote workflow。',
+          'remote run_ref 已固定為 23973580941，並完成 canonical pass/fail bundle smoke gate。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/agent_delegation_and_task_lifecycle_runtime.py',
+          'aaa-tools/aaa/governance_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/aaa/__init__.py',
+          'aaa-tools/tests/test_agent_delegation_and_task_lifecycle_runtime.py',
+          'aaa-tools/.github/workflows/v2-1-17-agent-delegation-and-task-lifecycle-runtime.yml',
+          'internal/development/reviews/2026-04-04-v2.1.17-agent-delegation-and-task-lifecycle-runtime-run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.17-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 delegation lifecycle contracts 與 Step2 runtime/evidence 已封裝為 v2.1.17 evidence bundle。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.17/agent-delegation-and-task-lifecycle-runtime/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.17/agent-delegation-and-task-lifecycle-runtime/result.json',
+          'internal/development/evidence/v2.1.17/agent-delegation-and-task-lifecycle-runtime/index.json',
+          'internal/development/evidence/v2.1.17/agent-delegation-and-task-lifecycle-runtime/run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.17-step3-exit-checklist.md',
+          'internal/development/milestones/20260404_v2.1.17_agent_delegation_and_task_lifecycle_runtime.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 Global 5 頁 MCP 驗證。',
+          'v2.1.17 detail 可呈現 Step1~Step4 全區塊、artifacts 與 delegation lifecycle evidence。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-04-v2.1.17-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-04-v2.1.17-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.17-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-04-v2.1.17-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [],
+    outputs: [],
+    references: [],
+    contractSummary: {
+      sourceOfTruth: 'aaa-tpl-docs/ops/index/version_index.md',
+      verdict: 'PASS',
+      reasonCode: 'step4-pass-mcp9003-gate-satisfied',
+      dataSource: 'operate_maintain_workflow_v2',
+      dataDate: '2026-04-04',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.16',
