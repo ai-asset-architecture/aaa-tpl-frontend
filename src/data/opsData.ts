@@ -279,6 +279,25 @@ const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-04',
+    version: 'v2.1.34',
+    name: 'Topology-Aware Materialization and Bootstrap Mapping',
+    meaning: '將 materialization / bootstrap mapping 收斂為 topology-aware placement rules，並固定 workflow/codeowners target scope。',
+    why: '讓 governance assets、workflow 與 CODEOWNERS 的投放位置不再默認 dedicated-only，並阻擋 placement 反向奪取 authority。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-34-topology-aware-materialization-and-bootstrap-mapping.yml#23978080760',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-04-v2.1.34-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-04-v2.1.34-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-04-v2.1.34-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-04-v2.1.34-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-04',
     version: 'v2.1.33',
     name: 'Topology-Aware Prerequisite Gate',
     meaning: '將 prerequisite gate 收斂為 topology-aware compliance gate，固定 topology expectation、detection 與 evidence sufficiency verdict。',
@@ -716,6 +735,18 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 export const workflows: WorkflowRow[] = [
   {
     createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
+    idPath: 'aaa-tools/.github/workflows/v2-1-34-topology-aware-materialization-and-bootstrap-mapping.yml',
+    workflow: 'v2.1.34 Topology-Aware Materialization and Bootstrap Mapping',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 topology-aware materialization / bootstrap mapping 可固定 placement、workflow/codeowners target scope 與 mapping completeness，並拒絕 placement 奪取 authority。',
+    objective: 'PASS：dedicated/repo_local/hybrid 三種 placement 可被 machine-checkable 收斂；FAIL：placement 被誤當 authority source、package active 被誤宣稱或 prose fallback 被阻擋。',
+    useCase: 'v2.1.34 topology-aware materialization and bootstrap mapping smoke gate。',
+    triggerWhen: 'materialization mapping runtime、CLI binding、workflow smoke run 或 canonical fixtures 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
+    createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
     idPath: 'aaa-tools/.github/workflows/v2-1-33-topology-aware-prerequisite-gate.yml',
     workflow: 'v2.1.33 Topology-Aware Prerequisite Gate',
     trigger: 'push(main) + workflow_dispatch',
@@ -1017,6 +1048,103 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.34',
+    date: '2026-04-04',
+    version: 'v2.1.34',
+    name: 'Topology-Aware Materialization and Bootstrap Mapping',
+    meaning: '把 materialization / bootstrap mapping 補成 topology-aware placement runtime，固定 workflow/codeowners target scope 與 mapping completeness。',
+    why: '讓 bootstrap placement 不再隱含 dedicated-only 假設，並明確寫死 placement 不等於 governance authority。',
+    purpose: '驗證 Step1 到 Step4 對 topology-aware materialization / bootstrap mapping 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單與 v2.1.34 detail 全部呈現一致 Step1~Step4 與 topology-aware materialization mapping evidence。',
+      fail: 'run_ref、versions/workflows/detail 任一路由或 topology-aware materialization mapping evidence 不一致或不可達。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA GitHub governance topology support program 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-04T19:36:00+08:00',
+    digest: 'sha256:aaa-v2-1-34-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'topology-aware materialization/bootstrap mapping schema 與 pass/fail fixtures 已完成 canonical baseline。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-04-v2.1.34-topology-aware-materialization-and-bootstrap-mapping-plan.md',
+          'internal/development/audits/2026-04-04-v2.1.34-topology-aware-materialization-and-bootstrap-mapping-audit.md',
+          'internal/development/reviews/2026-04-04-v2.1.34-topology-aware-materialization-and-bootstrap-mapping-diff-paths.md',
+          'internal/development/reviews/2026-04-04-v2.1.34-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 topology-aware materialization/bootstrap mapping runtime、CLI binding 與 remote workflow。',
+          'remote run_ref 已固定為 23978080760，並完成 canonical pass/fail bundle smoke gate。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/topology_aware_materialization_and_bootstrap_mapping.py',
+          'aaa-tools/aaa/governance_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/tests/test_topology_aware_materialization_and_bootstrap_mapping.py',
+          'aaa-tools/.github/workflows/v2-1-34-topology-aware-materialization-and-bootstrap-mapping.yml',
+          'internal/development/reviews/2026-04-04-v2.1.34-topology-aware-materialization-and-bootstrap-mapping-run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.34-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 topology-aware mapping contracts 與 Step2 runtime/evidence 已封裝為 v2.1.34 evidence bundle。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.34/topology-aware-materialization-and-bootstrap-mapping/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.34/topology-aware-materialization-and-bootstrap-mapping/result.json',
+          'internal/development/evidence/v2.1.34/topology-aware-materialization-and-bootstrap-mapping/index.json',
+          'internal/development/evidence/v2.1.34/topology-aware-materialization-and-bootstrap-mapping/run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.34-step3-exit-checklist.md',
+          'internal/development/milestones/20260404_v2.1.34_topology_aware_materialization_and_bootstrap_mapping.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 MCP 3 頁驗證。',
+          'v2.1.34 detail 可呈現 Step1~Step4 區塊、topology-aware materialization mapping evidence 與 remote run trace。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-04-v2.1.34-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-04-v2.1.34-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.34-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-04-v2.1.34-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [],
+    outputs: [],
+    references: [],
+    contractSummary: {
+      sourceOfTruth: 'aaa-tpl-docs/ops/index/version_index.md',
+      verdict: 'PASS',
+      reasonCode: 'step4-pass-mcp9003-gate-satisfied',
+      dataSource: 'version-dashboard-record.v0.1',
+      dataDate: '2026-04-04',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.33',
