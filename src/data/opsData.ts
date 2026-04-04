@@ -279,6 +279,25 @@ const unsortedVersions: OpsVersionRow[] = [
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-04',
+    version: 'v2.1.13',
+    name: 'Session Persistence and Transcript Compaction Baseline',
+    meaning: '將 session persistence、transcript boundary 與 compaction-safe replay 收斂為 shared session plane。',
+    why: '讓 AAA 不只會跑 turn，也能可信保存、壓縮、重放，並阻擋 transcript 奪取 canonical truth。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-13-session-persistence-and-transcript-compaction.yml#23972678968',
+    evidenceRefs: [
+      'internal/development/reviews/2026-04-04-v2.1.13-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-04-v2.1.13-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-04-v2.1.13-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-04-v2.1.13-step4-completion-report.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-04',
     version: 'v2.1.12',
     name: 'Tool Progress and Runtime Event Stream',
     meaning: '將 tool progress 與 runtime progress 收斂為 shared event stream，固定 progress/result/evidence signal 分層。',
@@ -528,6 +547,18 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 export const workflows: WorkflowRow[] = [
   {
     createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
+    idPath: 'aaa-tools/.github/workflows/v2-1-13-session-persistence-and-transcript-compaction.yml',
+    workflow: 'v2.1.13 Session Persistence and Transcript Compaction',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose: '驗證 session persistence runtime 可固定 session store、transcript class、compaction boundary 與 replay input law，並拒絕 transcript 奪取 canonical truth。',
+    objective: 'PASS：session store、transcript class、compaction boundary 與 replay input enum 可被 validator 收斂；FAIL：canonical truth promotion、audit reproducibility 缺口或 prose fallback 被阻擋。',
+    useCase: 'v2.1.13 session persistence and transcript compaction smoke gate。',
+    triggerWhen: 'session persistence runtime、CLI binding、workflow smoke run 或 canonical fixtures 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
+    createdUpdated: '建立 2026-04-04 / 更新 2026-04-04',
     idPath: 'aaa-tools/.github/workflows/v2-1-12-tool-progress-and-runtime-event-stream.yml',
     workflow: 'v2.1.12 Tool Progress and Runtime Event Stream',
     trigger: 'push(main) + workflow_dispatch',
@@ -709,6 +740,104 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.13',
+    date: '2026-04-04',
+    version: 'v2.1.13',
+    name: 'Session Persistence and Transcript Compaction Baseline',
+    meaning: '把 session persistence、transcript boundary 與 compaction-safe replay 從 Step1 contract 收斂為 shared session plane。',
+    why: '讓 AAA 的 session 不只可執行，也可可信保存、壓縮與重放，同時阻擋 compacted transcript 或 transcript store 反向奪取 canonical truth。',
+    purpose: '驗證 Step1 到 Step4 對 session persistence and transcript compaction 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單、dashboard 與 v2.1.13 detail 全部呈現一致 Step1~Step4 與 shared session runtime evidence。',
+      fail: 'session persistence run_ref、evidence bundle、frontend detail 或 9003 任一路由不一致或不可達。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA 版本治理與 shared session persistence runtime 的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-04T14:53:00+08:00',
+    digest: 'sha256:aaa-v2-1-13-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'session persistence schema 與 pass/fail fixtures 已完成 canonical baseline。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-04-v2.1.13-session-persistence-and-transcript-compaction-baseline-plan.md',
+          'internal/development/audits/2026-04-04-v2.1.13-session-persistence-and-transcript-compaction-baseline-audit.md',
+          'internal/development/reviews/2026-04-04-v2.1.13-session-persistence-and-transcript-compaction-baseline-diff-paths.md',
+          'internal/development/reviews/2026-04-04-v2.1.13-step1-exit-checklist.md',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 session persistence and transcript compaction validator、CLI binding 與 remote workflow。',
+          'remote run_ref 已固定為 23972678968，並完成 canonical pass/fail bundle smoke gate。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/session_persistence_and_transcript_compaction.py',
+          'aaa-tools/aaa/governance_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/aaa/__init__.py',
+          'aaa-tools/tests/test_session_persistence_and_transcript_compaction.py',
+          'aaa-tools/.github/workflows/v2-1-13-session-persistence-and-transcript-compaction.yml',
+          'internal/development/reviews/2026-04-04-v2.1.13-session-persistence-and-transcript-compaction-run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.13-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 session persistence contracts 與 Step2 runtime/evidence 已封裝為 v2.1.13 evidence bundle。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.13/session-persistence-and-transcript-compaction/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.13/session-persistence-and-transcript-compaction/result.json',
+          'internal/development/evidence/v2.1.13/session-persistence-and-transcript-compaction/index.json',
+          'internal/development/evidence/v2.1.13/session-persistence-and-transcript-compaction/run-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.13-step3-exit-checklist.md',
+          'internal/development/milestones/20260404_v2.1.13_session_persistence_and_transcript_compaction.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 Global 5 頁 MCP 驗證。',
+          'v2.1.13 detail 可呈現 Step1~Step4 全區塊、artifacts 與 shared session runtime evidence。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-04-v2.1.13-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-04-v2.1.13-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-04-v2.1.13-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-04-v2.1.13-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [],
+    outputs: [],
+    references: [],
+    contractSummary: {
+      sourceOfTruth: 'aaa-tpl-docs/ops/index/version_index.md',
+      verdict: 'PASS',
+      reasonCode: 'step4-pass-mcp9003-gate-satisfied',
+      dataSource: 'operate_maintain_workflow_v2',
+      dataDate: '2026-04-04',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.12',
