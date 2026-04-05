@@ -6,7 +6,7 @@ export type OpsVersionRow = {
   meaning: string;
   why: string;
   landing: string;
-  status: 'PLANNED' | 'UNVERIFIED' | 'PASS' | 'FAIL';
+  status: 'PLANNED' | 'UNVERIFIED' | 'COMPLETED_STEP1' | 'BRIDGE_ONLY' | 'PASS' | 'FAIL';
   availability: string;
   runRef: string;
   evidenceRefs: string[];
@@ -276,6 +276,31 @@ function compareVersionDesc(a: string, b: string): number {
 }
 
 const unsortedVersions: OpsVersionRow[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-05',
+    version: 'v2.1.41',
+    name: 'CLI Help and Truthful Support Surface Upgrade',
+    meaning:
+      '把 public CLI/help 與 topology-aware package status 升級為 truthful onboarding/support surface，明示 client-authored artifact、non-automation 與 non-readiness 邊界。',
+    why:
+      '避免 remote client / first-contact AI 把 canonical supported path 誤讀成 fully automated orchestration，並讓 `package status` 不再只是 topology signal。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@.github/workflows/v2-1-41-cli-help-and-truthful-support-surface-upgrade.yml#23992806925',
+    evidenceRefs: [
+      'internal/development/plans/2026-04-05-v2.1.41-cli-help-and-truthful-support-surface-upgrade-plan.md',
+      'internal/development/audits/2026-04-05-v2.1.41-cli-help-and-truthful-support-surface-upgrade-audit.md',
+      'internal/development/reviews/2026-04-05-v2.1.41-cli-help-and-truthful-support-surface-upgrade-diff-paths.md',
+      'internal/development/reviews/2026-04-05-v2.1.41-step1-exit-checklist.md',
+      'internal/development/reviews/2026-04-05-v2.1.41-step4-dashboard-baseline.md',
+      'internal/development/reviews/2026-04-05-v2.1.41-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-05-v2.1.41-step4-exit-checklist.md',
+      'internal/development/reviews/2026-04-05-v2.1.41-step4-completion-report.md',
+    ],
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     date: '2026-04-05',
@@ -1001,6 +1026,20 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 export const workflows: WorkflowRow[] = [
   {
     createdUpdated: '建立 2026-04-05 / 更新 2026-04-05',
+    idPath: 'aaa-tools/.github/workflows/v2-1-41-cli-help-and-truthful-support-surface-upgrade.yml',
+    workflow: 'v2.1.41 CLI Help and Truthful Support Surface Upgrade',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose:
+      '驗證 public CLI/help 可 machine-readable 地標示 client-authored artifact、non-automation、non-readiness truth boundary，並讓 `package status` 納入 minimum repo set 與 misplaced governance assets。',
+    objective:
+      'PASS：remote client 可從 CLI/help 直接讀到 truthful onboarding/support surface；FAIL：client-authored input、automation boundary 或 non-readiness boundary 被隱藏，或 `package status` 仍只停留在 topology signal。',
+    useCase: 'v2.1.41 cli/help truthful support surface smoke gate。',
+    triggerWhen: 'CLI help wording、supported-path artifact contract、package status truth surface 或 canonical fixtures 變更時。',
+    source: '來源：aaa-tools CI + aaa-tpl-docs canonical fixtures',
+    mode: 'auto+manual',
+  },
+  {
+    createdUpdated: '建立 2026-04-05 / 更新 2026-04-05',
     idPath: 'aaa-tools/.github/workflows/v2-1-40-outside-in-validation-and-evidence-promotion-baseline.yml',
     workflow: 'v2.1.40 Outside-In Validation and Evidence Promotion Baseline',
     trigger: 'push(main) + workflow_dispatch',
@@ -1482,6 +1521,110 @@ export const workflows: WorkflowRow[] = [
 ];
 
 const explicitVersionDetails: VersionDetail[] = [
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.41',
+    date: '2026-04-05',
+    version: 'v2.1.41',
+    name: 'CLI Help and Truthful Support Surface Upgrade',
+    meaning:
+      '把 public CLI/help 與 topology-aware package status 升級為 truthful onboarding/support surface，並明示 canonical path 中仍存在 client-authored input boundary。',
+    why:
+      '讓 remote client / first-contact AI 在第一次接觸 AAA 時，不會把 supported path 誤讀成 fully automated orchestration 或 full readiness certification。',
+    purpose: '驗證 Step1 契約基線、local implementation 與對外 truth surface 已一致，但 remote Step2 evidence 尚未成立。',
+    targets: {
+      pass: '9003 版本清單、流程清單與 v2.1.41 detail 至少一致呈現 Step1 truth、client-authored artifact boundary、not-fully-automated 與 not-full-readiness 語義。',
+      fail: 'versions/workflows/detail 任一路由把 v2.1.41 說成已完成 remote verification，或隱藏 client-authored / non-readiness boundary。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA outside-in follow-up line 的 truthful support surface 升級。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-05T10:58:00+08:00',
+    digest: 'sha256:aaa-v2-1-41-step4-pass-mcp9003',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths、Step1 exit checklist 與 truth-surface schema + pass/fail fixtures。',
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-05-v2.1.41-cli-help-and-truthful-support-surface-upgrade-plan.md',
+          'internal/development/audits/2026-04-05-v2.1.41-cli-help-and-truthful-support-surface-upgrade-audit.md',
+          'internal/development/reviews/2026-04-05-v2.1.41-cli-help-and-truthful-support-surface-upgrade-diff-paths.md',
+          'internal/development/reviews/2026-04-05-v2.1.41-step1-exit-checklist.md',
+          'internal/development/contracts/ops/cli-help-and-truthful-support-surface.v0.1.schema.json',
+          'internal/development/contracts/ops/examples/pass/2026-04-05-v2.1.41-cli-help-and-truthful-support-surface-upgrade.pass.json',
+          'internal/development/contracts/ops/examples/fail/2026-04-05-v2.1.41-cli-help-and-truthful-support-surface-upgrade.fail.json',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 truthful support surface upgrade，並固定輸出 client-authored artifact boundary、automation boundary 與 support-truth-only signals。',
+          'remote run_ref 已固定為 23992806925，workflow smoke gate 結論為 success。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/bootstrap_commands.py',
+          'aaa-tools/aaa/package_commands.py',
+          'aaa-tools/aaa/cli.py',
+          'aaa-tools/aaa/init_commands.py',
+          'aaa-tools/tests/test_supported_bootstrap_gate_chain.py',
+          'aaa-tools/tests/test_public_package_cli_entry_surface.py',
+          'aaa-tools/.github/workflows/v2-1-41-cli-help-and-truthful-support-surface-upgrade.yml',
+          'internal/development/reviews/2026-04-05-v2.1.41-cli-help-and-truthful-support-surface-upgrade-run-evidence.md',
+          'internal/development/reviews/2026-04-05-v2.1.41-step2-exit-checklist.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 contracts 與 Step2 runtime/workflow/evidence 已封裝為 v2.1.41 preserved bundle。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.41/cli-help-and-truthful-support-surface-upgrade/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.41/cli-help-and-truthful-support-surface-upgrade/result.json',
+          'internal/development/evidence/v2.1.41/cli-help-and-truthful-support-surface-upgrade/index.json',
+          'internal/development/evidence/v2.1.41/cli-help-and-truthful-support-surface-upgrade/run-evidence.md',
+          'internal/development/reviews/2026-04-05-v2.1.41-step3-exit-checklist.md',
+          'internal/development/milestones/20260405_v2.1.41_cli_help_and_truthful_support_surface_upgrade.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:9003 已通過 MCP 3 頁驗證。',
+          'v2.1.41 detail 可呈現 client-authored artifact boundary、non-automation truth、non-readiness truth 與 remote run trace。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-05-v2.1.41-step4-dashboard-baseline.md',
+          'internal/development/reviews/2026-04-05-v2.1.41-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-05-v2.1.41-step4-exit-checklist.md',
+          'internal/development/reviews/2026-04-05-v2.1.41-step4-completion-report.md',
+        ],
+      },
+    ],
+    inputs: [],
+    outputs: [],
+    references: [],
+    contractSummary: {
+      sourceOfTruth: 'aaa-tpl-docs/ops/index/version_index.md',
+      verdict: 'PASS',
+      reasonCode: 'step4-pass-mcp9003-gate-satisfied',
+      dataSource: 'version-dashboard-record.v0.1',
+      dataDate: '2026-04-05',
+    },
+  },
   {
     releaseTrack: 'operate_maintain_v2',
     versionKey: 'operate_maintain_v2::v2.1.40',
