@@ -303,6 +303,34 @@ const unsortedVersions: OpsVersionRow[] = [
   },
   {
     releaseTrack: 'operate_maintain_v2',
+    date: '2026-04-06',
+    version: 'v2.1.42',
+    name: 'Intermediate Bundle Generation Baseline',
+    meaning:
+      '把 canonical supported path 中仍屬 `client_authored` 的中段 bundle（prerequisite_bundle、materialization_mapping_bundle）收回為 `command_emitted`，誠實揭露 closeout_composition_bundle 與 topology_closeout_bundle 仍為 client_authored gap。',
+    why:
+      '讓 AAA 對中段 artifacts 的責任從「驗證 client 提供內容」提升到「主動產生 canonical intermediate artifacts」，同時維持 supported_path_fully_automated=false 與 full_orchestration_provided=false 的誠實邊界。',
+    landing: 'governance:operate_maintain_workflow_v2',
+    status: 'PASS',
+    availability: 'step4-pass-mcp9003-gate-satisfied',
+    runRef:
+      'gh-actions:ai-asset-architecture/aaa-tools@v2-1-42-intermediate-bundle-generation-baseline.yml#24013340136',
+    evidenceRefs: [
+      'internal/development/plans/2026-04-05-v2.1.42-intermediate-bundle-generation-baseline-plan.md',
+      'internal/development/audits/2026-04-05-v2.1.42-intermediate-bundle-generation-baseline-audit.md',
+      'internal/development/reviews/2026-04-05-v2.1.42-intermediate-bundle-generation-baseline-diff-paths.md',
+      'internal/development/reviews/2026-04-05-v2.1.42-step1-exit-checklist.md',
+      'internal/development/evidence/v2.1.42/intermediate-bundle-generation-baseline/run-evidence.md',
+      'internal/development/evidence/v2.1.42/intermediate-bundle-generation-baseline/result.json',
+      'internal/development/evidence/v2.1.42/intermediate-bundle-generation-baseline/asset-manifest.v0.1.json',
+      'internal/development/milestones/20260406_v2.1.42_intermediate-bundle-generation-baseline.md',
+      'internal/development/reviews/2026-04-06-v2.1.42-step4-mcp-evidence.md',
+      'internal/development/reviews/2026-04-06-v2.1.42-step4-exit-checklist.md',
+      'internal/development/milestones/completion-reports/v2.1.42_completion_report_20260406.md',
+    ],
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
     date: '2026-04-05',
     version: 'v2.1.40',
     name: 'Outside-In Validation and Evidence Promotion Baseline',
@@ -1025,6 +1053,20 @@ export const versions: OpsVersionRow[] = [...unsortedVersions].sort((a, b) => co
 
 export const workflows: WorkflowRow[] = [
   {
+    createdUpdated: '建立 2026-04-06 / 更新 2026-04-06',
+    idPath: 'aaa-tools/.github/workflows/v2-1-42-intermediate-bundle-generation-baseline.yml',
+    workflow: 'v2.1.42 Intermediate Bundle Generation Baseline',
+    trigger: 'push(main) + workflow_dispatch',
+    purpose:
+      '驗證 intermediate bundle generation 可產出 prerequisite_bundle 與 materialization_mapping_bundle，覆蓋 dedicated_repo / repo_local / hybrid 三種 topology，正確揭露剩餘 client_authored gap。',
+    objective:
+      'PASS：33/33 unit tests pass，smoke run 涵蓋三種 topology，gap_declared=true，supported_path_fully_automated=false；FAIL：topology coverage 缺失或 gap 被掩蓋。',
+    useCase: 'v2.1.42 intermediate bundle generation baseline smoke gate。',
+    triggerWhen: 'intermediate bundle generator code、topology profile、schema fixtures 或 governance_commands.py 變更時。',
+    source: '來源：aaa-tools CI（run_ref=#24013340136）+ aaa-tpl-docs canonical evidence',
+    mode: 'auto+manual',
+  },
+  {
     createdUpdated: '建立 2026-04-05 / 更新 2026-04-05',
     idPath: 'aaa-tools/.github/workflows/v2-1-41-cli-help-and-truthful-support-surface-upgrade.yml',
     workflow: 'v2.1.41 CLI Help and Truthful Support Surface Upgrade',
@@ -1623,6 +1665,106 @@ const explicitVersionDetails: VersionDetail[] = [
       reasonCode: 'step4-pass-mcp9003-gate-satisfied',
       dataSource: 'version-dashboard-record.v0.1',
       dataDate: '2026-04-05',
+    },
+  },
+  {
+    releaseTrack: 'operate_maintain_v2',
+    versionKey: 'operate_maintain_v2::v2.1.42',
+    date: '2026-04-06',
+    version: 'v2.1.42',
+    name: 'Intermediate Bundle Generation Baseline',
+    meaning:
+      '把 canonical supported path 中仍屬 `client_authored` 的中段 bundle（prerequisite_bundle、materialization_mapping_bundle）收回為 `command_emitted`，誠實揭露 closeout_composition_bundle 與 topology_closeout_bundle 仍為 client_authored gap。',
+    why:
+      '讓 AAA 對中段 artifacts 的責任從「驗證 client 提供內容」提升到「主動產生 canonical intermediate artifacts」，同時維持 supported_path_fully_automated=false 與 full_orchestration_provided=false 的誠實邊界。',
+    purpose: '驗證 Step1 到 Step4 對 intermediate bundle generation baseline 的完整閉環與證據可追溯。',
+    targets: {
+      pass: '9003 版本清單、流程清單與 v2.1.42 detail 全部呈現一致 Step1~Step4，33/33 tests pass，topology coverage dedicated_repo/repo_local/hybrid 完整，gap 已明示。',
+      fail: 'run_ref 缺失、topology coverage 不完整、gap 被掩蓋，或 frontend 任一路由不顯示 v2.1.42。',
+    },
+    workflowName: 'governance:operate_maintain_workflow_v2',
+    workflowUseCase: 'AAA canonical intermediate bundle generation 線的單版閉環。',
+    status: 'COMPLETED',
+    verificationStatus: 'VERIFIED',
+    dataMode: 'runtime-template',
+    updatedAt: '2026-04-06T08:00:00+08:00',
+    digest: 'sha256:operate_maintain_v2-v2.1.42-backfill',
+    steps: [
+      {
+        step: 1,
+        title: 'Step1 契約基線',
+        status: 'PASS',
+        lines: [
+          '已建立 plan/audit/diff-paths 與 Step1 exit checklist。',
+          'intermediate bundle generation schema、pass/fail fixtures 已完成 canonical baseline。',
+        ],
+        artifacts: [
+          'internal/development/plans/2026-04-05-v2.1.42-intermediate-bundle-generation-baseline-plan.md',
+          'internal/development/audits/2026-04-05-v2.1.42-intermediate-bundle-generation-baseline-audit.md',
+          'internal/development/reviews/2026-04-05-v2.1.42-intermediate-bundle-generation-baseline-diff-paths.md',
+          'internal/development/reviews/2026-04-05-v2.1.42-step1-exit-checklist.md',
+          'internal/development/contracts/ops/intermediate-bundle-generation-baseline.v0.1.schema.json',
+          'internal/development/contracts/ops/examples/pass/2026-04-05-v2.1.42-intermediate-bundle-generation-baseline.pass.json',
+          'internal/development/contracts/ops/examples/fail/2026-04-05-v2.1.42-intermediate-bundle-generation-baseline.fail.json',
+        ],
+      },
+      {
+        step: 2,
+        title: 'Step2 實作與執行',
+        status: 'PASS',
+        lines: [
+          'aaa-tools 已上線 intermediate bundle generator、CLI binding（intermediate-bundle-generate/validate）與 remote workflow。',
+          'remote run_ref 已固定為 #24013340136，33/33 unit tests pass，三種 topology smoke gate PASS。',
+        ],
+        artifacts: [
+          'aaa-tools/aaa/intermediate_bundle_generation_baseline.py',
+          'aaa-tools/aaa/governance_commands.py',
+          'aaa-tools/tests/test_intermediate_bundle_generation_baseline.py',
+          'aaa-tools/.github/workflows/v2-1-42-intermediate-bundle-generation-baseline.yml',
+          'internal/development/evidence/v2.1.42/intermediate-bundle-generation-baseline/run-evidence.md',
+        ],
+      },
+      {
+        step: 3,
+        title: 'Step3 資產保存',
+        status: 'PASS',
+        lines: [
+          'Step1 contracts 與 Step2 runtime/evidence 已封裝為 v2.1.42 evidence bundle。',
+          'gap 已明示：closeout_composition_bundle / topology_closeout_bundle 仍為 client_authored，待 v2.1.44 fill。',
+        ],
+        artifacts: [
+          'internal/development/evidence/v2.1.42/intermediate-bundle-generation-baseline/asset-manifest.v0.1.json',
+          'internal/development/evidence/v2.1.42/intermediate-bundle-generation-baseline/result.json',
+          'internal/development/evidence/v2.1.42/intermediate-bundle-generation-baseline/index.json',
+          'internal/development/milestones/20260406_v2.1.42_intermediate-bundle-generation-baseline.md',
+        ],
+      },
+      {
+        step: 4,
+        title: 'Step4 結案交付',
+        status: 'PASS',
+        lines: [
+          'localhost:3001 MCP 3 頁驗證 PASS（primary_tool=playwright）。',
+          'Page1 /ops-registry?tab=versions：v2.1.42 顯示 PASS，run_ref 正確。',
+          'Page2 /ops-registry?tab=workflows：v2.1.42 workflow 已出現（run_ref=#24013340136）。',
+          'Page3 /ops-version/v2.1.42：COMPLETED 狀態，全 Step 可追溯。',
+        ],
+        artifacts: [
+          'internal/development/reviews/2026-04-06-v2.1.42-step4-mcp-evidence.md',
+          'internal/development/reviews/2026-04-06-v2.1.42-step4-exit-checklist.md',
+          'internal/development/milestones/completion-reports/v2.1.42_completion_report_20260406.md',
+        ],
+      },
+    ],
+    inputs: [],
+    outputs: [],
+    references: [],
+    contractSummary: {
+      sourceOfTruth: 'aaa-tpl-docs/ops/index/version_index.md',
+      verdict: 'PASS',
+      reasonCode: 'step4-pass-mcp9003-gate-satisfied',
+      dataSource: 'version-dashboard-record.v0.1',
+      dataDate: '2026-04-06',
     },
   },
   {
